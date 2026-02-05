@@ -52,7 +52,7 @@ const YourOrderDetails = () => {
   useEffect(() => {
     const fetchOrderData = async () => {
       const response = await fetch(
-        `http://localhost:3001/api/orders/${params?.id}`
+        `https://electronic-website-backend.onrender.com/api/orders/${params?.id}`
       );
       const data: Order = await response.json();
       setOrder(data);
@@ -60,7 +60,7 @@ const YourOrderDetails = () => {
 
     const fetchOrderProducts = async () => {
       const response = await fetch(
-        `http://localhost:3001/api/order-product/${params?.id}`
+        `https://electronic-website-backend.onrender.com/api/order-product/${params?.id}`
       );
       const data: OrderProduct[] = await response.json();
       setOrderProducts(data);

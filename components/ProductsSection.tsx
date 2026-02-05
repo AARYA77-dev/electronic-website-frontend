@@ -14,7 +14,7 @@ import Heading from "./Heading";
 
 const ProductsSection = async () => {
   // sending API request for getting all products
-  const data = await fetch("http://localhost:3001/api/products");
+  const data = await fetch("https://electronic-website-backend.onrender.com/api/products");
   const products = await data.json();
   return (
     <div className="bg-primary border-t-4 border-white">

@@ -18,7 +18,7 @@ export default async function Layout({
 
   let email: string = await session?.user?.email;
   
-  const res = await fetch(`http://localhost:3001/api/users/email/${email}`);
+  const res = await fetch(`https://electronic-website-backend.onrender.com/api/users/email/${email}`);
   const data = await res.json();
   // redirecting user to the home page if not admin
   if (data.role === "user") {

@@ -19,7 +19,7 @@ const DashboardNewCategoryPage = () => {
         }),
       };
       // sending API request for creating new cateogry
-      fetch(`http://localhost:3001/api/categories`, requestOptions)
+      fetch(`https://electronic-website-backend.onrender.com/api/categories`, requestOptions)
         .then((response) => {
           if (response.status === 201) {
             return response.json();

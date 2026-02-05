@@ -48,7 +48,7 @@ const AddNewProduct = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),
     };
-    fetch(`http://localhost:3001/api/products`, requestOptions)
+    fetch(`https://electronic-website-backend.onrender.com/api/products`, requestOptions)
       .then((response) => {
         setLoading(false)
         if (response.status === 201) {
@@ -82,7 +82,7 @@ const AddNewProduct = () => {
     formData.append("uploadedFile", file);
 
     try {
-      const response = await fetch("http://localhost:3001/api/main-image", {
+      const response = await fetch("https://electronic-website-backend.onrender.com/api/main-image", {
         method: "POST",
         body: formData,
       });
@@ -98,7 +98,7 @@ const AddNewProduct = () => {
   };
 
   const fetchCategories = async () => {
-    fetch(`http://localhost:3001/api/categories`)
+    fetch(`https://electronic-website-backend.onrender.com/api/categories`)
       .then((res) => {
         return res.json();
       })

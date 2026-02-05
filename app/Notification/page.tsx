@@ -26,7 +26,7 @@ export default function OrderStatusNotification() {
 
   useEffect(() => {
     socket.on('orderStatusChanged',()=>{
-      fetch('http://localhost:3001/api/notifications')
+      fetch('https://electronic-website-backend.onrender.com/api/notifications')
       .then((res)=>res.json())
       .then((data)=>setNotifications(data));
     });
@@ -53,7 +53,7 @@ export default function OrderStatusNotification() {
   }, []);
 
   const deleteNotification = async (id: number) => {
-    const res = await fetch(`http://localhost:3001/api/notifications/${id}`, {
+    const res = await fetch(`https://electronic-website-backend.onrender.com/api/notifications/${id}`, {
       method: 'DELETE',
     });
     if (res.ok) {

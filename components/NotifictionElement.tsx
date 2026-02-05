@@ -36,7 +36,7 @@ const NotificationElement = () => {
   const addNotification = useNotificationStore((state) => state.addNotification);
   
   useEffect(() => {
-    fetch('http://localhost:3001/api/notifications')
+    fetch('https://electronic-website-backend.onrender.com/api/notifications')
       .then((res) => res.json())
       .then((data) => setNotifications(data));
   }, []);

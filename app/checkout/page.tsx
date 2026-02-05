@@ -36,7 +36,7 @@ const CheckoutPage = () => {
 
   const getUserByEmail = async () => {
     if (session?.user?.email) {
-      fetch(`http://localhost:3001/api/users/email/${session?.user?.email}`, {
+      fetch(`https://electronic-website-backend.onrender.com/api/users/email/${session?.user?.email}`, {
         cache: "no-store",
       })
         .then((response) => response.json())
@@ -165,7 +165,7 @@ const CheckoutPage = () => {
         handler: async function (response: any) {
           // ✅ Payment successful — create order
           try {
-            const orderRes = await fetch("http://localhost:3001/api/orders", {
+            const orderRes = await fetch("https://electronic-website-backend.onrender.com/api/orders", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -258,7 +258,7 @@ const CheckoutPage = () => {
     productId: string,
     productQuantity: number
   ) => {
-    await fetch("http://localhost:3001/api/order-product", {
+    await fetch("https://electronic-website-backend.onrender.com/api/order-product", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

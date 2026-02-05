@@ -18,7 +18,7 @@ const Yourorders = () => {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      const response = await fetch("http://localhost:3001/api/orders");
+      const response = await fetch("https://electronic-website-backend.onrender.com/api/orders");
       const data = await response.json();
       setOrders(data);
     };

@@ -24,7 +24,7 @@ const UserProfile = () => {
   });
 
   const handleUpdate = async () => {
-    const res = await fetch(`http://localhost:3001/api/users/${user.id}`, {
+    const res = await fetch(`https://electronic-website-backend.onrender.com/api/users/${user.id}`, {
       method: 'PUT',
       body: JSON.stringify(user),
       headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ const UserProfile = () => {
  
   const getUserByEmail = async () => {
     if (session?.user?.email) {
-      fetch(`http://localhost:3001/api/users/email/${session?.user?.email}`, {
+      fetch(`https://electronic-website-backend.onrender.com/api/users/email/${session?.user?.email}`, {
         cache: "no-store",
       })
         .then((response) => response.json())

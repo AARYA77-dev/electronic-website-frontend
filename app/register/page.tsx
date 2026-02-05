@@ -60,7 +60,7 @@ const RegisterPage = () => {
 
     try {
       // sending API request for registering user
-      const res = await fetch("http://localhost:3001/api/users", {
+      const res = await fetch("https://electronic-website-backend.onrender.com/api/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
