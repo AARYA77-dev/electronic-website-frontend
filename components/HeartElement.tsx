@@ -19,7 +19,6 @@ const HeartElement = ({wishQuantity}: {wishQuantity: number}) => {
     <div className="relative active:animate-pop">
       <Link href="/wishlist">
       <div className="pt-[6px]">
-
         <FaHeart className="text-2xl text-black" />
       </div>
         <span className="block w-6 h-6 font-bold bg-primary text-white rounded-full flex justify-center items-center absolute top-[-17px] right-[-22px]">

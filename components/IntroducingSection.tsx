@@ -13,24 +13,63 @@ import React from "react";
 
 const IntroducingSection = () => {
   return (
-    <div className="py-20 pt-24 bg-gradient-to-l from-white to-primary">
-      <div className="text-center flex flex-col gap-y-5 items-center">
-        <h2 className="text-white text-[390%] text-8xl font-extrabold text-center mb-2 max-md:text-6xl max-[480px]:text-4xl">
-          INTRODUCING <span className="text-black">SINGI</span><span className="text-secondary">TRONIC</span>
-        </h2>
-        <div>
-          <p className="text-white text-center text-2xl font-semibold max-md:text-xl max-[480px]:text-base">
-            Buy the latest electronics.
-          </p>
-          <p className="text-white text-center text-2xl font-semibold max-md:text-xl max-[480px]:text-base">
-            The best electronics for tech lovers.
-          </p>
-          <Link href="/shop" className="bg-secondary border-2 rounded-[34px] border-primary block text-tertiary  font-bold px-12 py-3 text-xl hover:text-secondary hover:bg-tertiary w-96 mt-2  max-md:text-lg max-md:w-72 max-[480px]:w-60 mx-auto active:animate-pop">
-            SHOP NOW
-          </Link>
-        </div>
-      </div>
+<div className="py-16 md:py-20 bg-gradient-to-l from-white to-primary">
+
+  <div className="text-center flex flex-col gap-y-4 items-center px-4">
+
+    {/* Heading */}
+    <h2 className="
+      text-white 
+      font-extrabold 
+      leading-tight
+      text-[clamp(2rem,6vw,5rem)]
+    ">
+      INTRODUCING{" "}
+      <span className="text-black">SINGI</span>
+      <span className="text-secondary">TRONIC</span>
+    </h2>
+
+    {/* Subtitle */}
+    <div className="space-y-2">
+
+      <p className="text-white text-lg sm:text-xl md:text-2xl font-semibold">
+        Buy the latest electronics.
+      </p>
+
+      <p className="text-white text-lg sm:text-xl md:text-2xl font-semibold">
+        The best electronics for tech lovers.
+      </p>
+
+      {/* Button */}
+      <Link
+        href="/shop"
+        className="
+          mt-4 
+          inline-block
+          bg-secondary 
+          border-2 
+          border-primary 
+          rounded-full
+          text-tertiary 
+          font-bold
+          px-8 
+          py-3
+          text-base 
+          sm:text-lg 
+          md:text-xl
+          hover:text-secondary 
+          hover:bg-tertiary
+          active:animate-pop
+          transition-all
+        "
+      >
+        SHOP NOW
+      </Link>
+
     </div>
+  </div>
+</div>
+
   );
 };
 

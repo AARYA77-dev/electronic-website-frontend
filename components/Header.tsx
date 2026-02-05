@@ -30,7 +30,13 @@ const Header = () => {
   const pathname = usePathname();
   const { wishlist, setWishlist, wishQuantity } = useWishlistStore();
 
+
+  const closeDropdown = () => {
+    (document.activeElement as HTMLElement)?.blur();
+  };
+
   const handleLogout = () => {
+    closeDropdown();
     setTimeout(() => signOut(), 1000);
     toast.success("Logout successful!");
   };
@@ -46,27 +52,28 @@ const Header = () => {
       title: string;
       price: number;
       image: string;
-      slug:string
+      slug: string
       stockAvailabillity: number;
       quantity: number;
     }[] = [];
-    
-    wishlist.map((item: any) => productArray.push({id: item?.product?.id,
-       title: item?.product?.title,
-        price: item?.product?.price, 
-        image: item?.product?.mainImage, 
-        slug: item?.product?.slug,
-         stockAvailabillity: item?.product?.inStock,
-         quantity:item?.product?.quantity
-        }));
-    
+
+    wishlist.map((item: any) => productArray.push({
+      id: item?.product?.id,
+      title: item?.product?.title,
+      price: item?.product?.price,
+      image: item?.product?.mainImage,
+      slug: item?.product?.slug,
+      stockAvailabillity: item?.product?.inStock,
+      quantity: item?.product?.quantity
+    }));
+
     setWishlist(productArray);
   };
 
   // getting user by email so I can get his user id
   const getUserByEmail = async () => {
     if (session?.user?.email) {
-      
+
       fetch(`https://electronic-website-backend.onrender.com/api/users/email/${session?.user?.email}`, {
         cache: "no-store",
       })
@@ -83,96 +90,171 @@ const Header = () => {
 
   return (
     <header className="bg-white">
+
       <HeaderTop />
+
+      {/* ================= USER HEADER ================= */}
       {!pathname.startsWith("/admin") && (
-  <div className="h-32 bg-white flex items-center justify-between px-16 ...">
+        <div className="
+  bg-white
+  flex flex-col
+  px-4 sm:px-8 lg:px-16
+  py-3
+  max-w-screen-2xl
+  mx-auto
+  gap-3
+">
 
-    <Link href="/">
-      <img src="/logo v1 red.png" alt={""} />
-    </Link>
+          {/* ⭐ Desktop Layout */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 items-center w-full">
 
-    <SearchInput />
+            {/* Left → Logo */}
+            <div className="justify-self-start">
+              <Link href="/">
+                <img
+                  src="/logo v1 red.png"
+                  alt="Singitronic logo"
+                  className="w-28 sm:w-36 lg:w-56 h-auto"
+                />
+              </Link>
+            </div>
 
-    <div className="flex gap-x-10">
-      <HeartElement wishQuantity={wishQuantity} />
-      <CartElement />
-      {/* {session && <NotificationElement />} */}
-      <div className="dropdown dropdown-end">
-        
-        <div tabIndex={0} role="button" className="mt-[12%] w-10">
-          <FaUser className="text-2xl text-black active:animate-pop" />
+            {/* Center → Search (Perfectly Centered) */}
+            <div className="hidden lg:block w-full max-w-xl mx-auto">
+              <SearchInput />
+            </div>
+
+            {/* Right → Icons */}
+            <div className="justify-self-end flex items-center gap-4 sm:gap-6 lg:gap-10">
+
+              <HeartElement wishQuantity={wishQuantity} />
+              <CartElement />
+
+              {/* Dropdown */}
+              <div className="dropdown dropdown-end">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="w-10 flex items-center justify-center cursor-pointer"
+                >
+                  <FaUser className="text-2xl text-black active:animate-pop" />
+                </div>
+
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  {session ? (
+                    <>
+                      <li>
+                        <Link onClick={closeDropdown} href="/Yourorders">
+                          Your Orders
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link onClick={closeDropdown} href="/Userprofile">
+                          Profile
+                        </Link>
+                      </li>
+
+                      <li>
+                        <button onClick={handleLogout}>Logout</button>
+                      </li>
+                    </>
+                  ) : (
+                    <>
+                      <li>
+                        <Link onClick={closeDropdown} href="/login">
+                          Login
+                        </Link>
+                      </li>
+
+                      <li>
+                        <Link onClick={closeDropdown} href="/register">
+                          Register
+                        </Link>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* ⭐ Mobile Search Row */}
+          <div className="w-full lg:hidden">
+            <SearchInput />
+          </div>
+
         </div>
 
-        <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-          {session ? (
-            <>
-              <li>
-                <Link onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="/Yourorders">Your Orders</Link>
-              </li>
 
-              <li>
-                <Link onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="/Userprofile">Profile</Link>
-              </li>
+      )}
 
-              <li onClick={handleLogout}>
-                <a onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="#">Logout</a>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <Link  onClick={() => (document.activeElement as HTMLElement)?.blur()} href="/login">Login</Link>
-              </li>
+      {/* ================= ADMIN HEADER ================= */}
+      {pathname.startsWith("/admin") && (
+        <div
+          className="
+          flex
+          justify-between
+          items-center
+          px-4 sm:px-8 lg:px-16
+          h-20 sm:h-24 lg:h-32
+          max-w-screen-2xl
+          mx-auto
+        "
+        >
 
-              <li>
-                <Link onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="/register">Register</Link>
-              </li>
-            </>
-          )}
-
-        </ul>
-
-      </div>
-    </div>
-  </div>
-)}
-
-      
-      {pathname.startsWith("/admin") === true && (
-        <div className="flex justify-between h-32 bg-white items-center px-16 max-[1320px]:px-10  max-w-screen-2xl mx-auto max-[400px]:px-5">
           <Link href="/">
             <Image
               src="/logo v1.png"
               width={130}
               height={130}
-              alt="singitronic logo"
-              className="w-56 h-auto"
+              alt="Singitronic logo"
+              className="w-40 sm:w-48 lg:w-56 h-auto"
             />
           </Link>
-          <div className="flex gap-x-5 items-center">
+
+          <div className="flex items-center gap-5">
+
             <div className="dropdown dropdown-end">
-              <div tabIndex={0} role="button" className="w-10 active:animate-pop">
-              <FaUser className="text-2xl text-black" />
+
+              <div
+                tabIndex={0}
+                role="button"
+                aria-label="Admin menu"
+                className="w-10 flex items-center justify-center cursor-pointer"
+              >
+                <FaUser className="text-2xl text-black active:animate-pop" />
               </div>
+
               <ul
                 tabIndex={0}
-                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+                className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <Link onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="/admin">Dashboard</Link>
-                </li>             
-                <li onClick={handleLogout}>
-                  <a onClick={() => (document.activeElement as HTMLElement)?.blur()}  href="#">Logout</a>
+                  <Link onClick={closeDropdown} href="/admin">
+                    Dashboard
+                  </Link>
+                </li>
+
+                <li>
+                  <button onClick={handleLogout}>
+                    Logout
+                  </button>
                 </li>
               </ul>
-            </div>
-          </div>
 
+            </div>
+
+          </div>
         </div>
-        
       )}
+
     </header>
   );
-};
-
+}
 export default Header;

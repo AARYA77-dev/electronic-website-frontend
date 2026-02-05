@@ -18,7 +18,13 @@ const CategoryMenu = () => {
   return (
     <div className="py-10 bg-primary">
       <Heading title="BROWSE CATEGORIES" />
-      <div className="max-w-screen-2xl mx-auto py-10 gap-x-5 px-16 max-md:px-10 gap-y-5 grid grid-cols-5 max-lg:grid-cols-3 max-md:grid-cols-2 max-[450px]:grid-cols-1">
+      <div className="grid 
+  grid-cols-2 
+  md:grid-cols-3 
+  lg:grid-cols-5 
+  gap-6 
+  px-4 
+  py-10">
         {categoryMenuList.map((item) => (
           <CategoryItem title={item.title} key={item.id} href={item.href}>
             <Image src={item.src} width={48} height={48} alt={item.title} />

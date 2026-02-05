@@ -25,18 +25,50 @@ const SearchInput = () => {
   };
 
   return (
-    <form className="flex w-full justify-center" onSubmit={searchProducts}>
+    <form
+      className="flex  max-w-xl mx-auto"
+      onSubmit={searchProducts}
+    >
       <input
         type="text"
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
-        placeholder="Type here"
-        className="bg-gray-50 input input-bordered w-[70%] rounded-tl-[34px] rounded-bl-[34px] outline-none focus:outline-none max-sm:w-full"
+        placeholder="Search products..."
+        className="
+      flex-1
+      bg-gray-50
+      border
+      border-gray-300
+      px-4
+      py-2
+      rounded-l-full
+      outline-none
+      focus:ring-2
+      focus:ring-secondary
+      text-sm sm:text-base
+    "
       />
-      <button type="submit" className="btn bg-secondary text-tertiary rounded-tr-[34px] rounded-br-[34px] text-white rounded-l-none rounded-r-xl hover:bg-tertiary hover:text-secondary">
+
+      <button
+        type="submit"
+        className="
+      bg-secondary
+      text-tertiary
+      px-4 sm:px-6
+      py-2
+      rounded-r-full
+      font-semibold
+      hover:bg-tertiary
+      hover:text-secondary
+      transition
+      text-sm sm:text-base
+    "
+      >
         Search
       </button>
+
     </form>
+
   );
 };
 

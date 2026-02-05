@@ -21,47 +21,83 @@ const ProductItem = ({
   color: string;
 }) => {
   return (
-    <div className="flex flex-col justify-center  items-center gap-y-2 w-[300px] h-[400px] bg-white rounded-[51px] shadow-[0_8px_20px_rgba(0,0,0,0.20)] transition-transform transition-shadow duration-300 ease-in-out hover:shadow-lg hover:scale-105">
-      <div className="">
-      <Link href={`/product/${product.slug}`}>
-        <Image
-          src={
-            product.mainImage
-              ? `/${product.mainImage}`
-              : "/product_placeholder.jpg"
-          }
-       
-          width="0"
-          height="0"
-          sizes="100vw"
-          className="w-auto h-[250px] my-[10px]"
-          alt={product?.title}
-        />
-      </Link>
-      <Link
-        href={`/product/${product.slug}`}
-        className="
-          text-lg text-black font-semibold block flex justify-center items-center"
-          
-      >
-        {product.title}
-      </Link>
-      <p
-        className="
-          text-lg text-black font-semibold block flex justify-center items-center"
-          >
-        ₹{product.price}
-      </p>
+    <div className="flex flex-col justify-between items-center gap-y-2 w-full bg-white rounded-[20px] md:rounded-[30px] shadow-[0_8px_20px_rgba(0,0,0,0.20)] transition-all duration-300 hover:shadow-lg hover:scale-105 p-2 sm:p-3 md:p-4">
 
-      <ProductItemRating productRating={product?.rating}  />
-      <Link
-        href={`/product/${product?.slug}`}
-        className="block flex justify-center items-center w-full rounded-[34px] text-tertiary uppercase bg-secondary border-2 border-secondary px-0 py-2 text-base hover:text-secondary font-bold shadow-sm hover:bg-tertiary  focus:outline-none focus:ring-2 active:animate-pop"
-        >
-        <p>View product</p>
-      </Link>
-        </div>
-    </div>
+  <Link href={`/product/${product.slug}`} className="w-full flex justify-center">
+
+    <Image
+      src={
+        product.mainImage
+          ? `/${product.mainImage}`
+          : "/product_placeholder.jpg"
+      }
+      width={300}
+      height={250}
+      alt={product.title}
+      className="
+        w-full 
+        h-[140px] 
+        sm:h-[160px] 
+        md:h-[200px] 
+        object-contain
+      "
+    />
+
+  </Link>
+
+  {/* Title */}
+  <Link
+    href={`/product/${product.slug}`}
+    className="
+      text-sm 
+      sm:text-base 
+      md:text-lg 
+      text-black 
+      font-semibold 
+      text-center
+      line-clamp-2
+    "
+  >
+    {product.title}
+  </Link>
+
+  {/* Price */}
+  <p className="text-sm sm:text-base md:text-lg font-semibold">
+    ₹{product.price}
+  </p>
+
+  <ProductItemRating productRating={product.rating} />
+
+  {/* Button */}
+  <Link
+    href={`/product/${product.slug}`}
+    className="
+      w-full 
+      text-center 
+      rounded-[20px] 
+      md:rounded-[34px]
+      text-tertiary 
+      uppercase 
+      bg-secondary 
+      border-2 
+      border-secondary 
+      py-1.5 
+      sm:py-2
+      text-xs 
+      sm:text-sm 
+      md:text-base 
+      font-bold 
+      shadow-sm 
+      hover:text-secondary 
+      hover:bg-tertiary 
+      active:animate-pop
+    "
+  >
+    View Product
+  </Link>
+
+</div>
+
   );
 };
 
