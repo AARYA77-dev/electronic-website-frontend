@@ -64,20 +64,18 @@ const Header = () => {
   };
   const dropdownRef = useRef<any>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      console.log("checking11",dropdownRef.current.contains(e.target))
-      if (!dropdownRef.current) return;
-       if (!dropdownRef.current?.contains(e.target)) {
-        setOpen(false);
-       }
-    };
+ useEffect(() => {
+  const handleClickOutside = (e: MouseEvent) => {
+    if (!(e.target as HTMLElement).closest(".user-dropdown")) {
+      setOpen(false);
+    }
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  document.addEventListener("mousedown", handleClickOutside);
+  return () =>
+    document.removeEventListener("mousedown", handleClickOutside);
+}, []);
+
 
 
   const getUserByEmail = async () => {
@@ -110,7 +108,7 @@ const Header = () => {
             <HeartElement wishQuantity={wishQuantity} />
             <CartElement />
             {/* <NotificationElement/> */}
-            <div ref={dropdownRef} className="dropdown dropdown-end ">
+            <div className="dropdown dropdown-end user-dropdown">
               <div onClick={() => setOpen(!open)} role="button" className="mt-[12%] w-10">
                 <FaUser className="text-2xl text-black active:animate-pop " />
               </div>
@@ -205,7 +203,7 @@ const Header = () => {
             />
           </Link>
           <div className="flex gap-x-5 items-center">
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end user-dropdown">
               <div onClick={() => setOpen(!open)} role="button" className="w-10 active:animate-pop">
                 <FaUser className="text-2xl text-black" />
               </div>
