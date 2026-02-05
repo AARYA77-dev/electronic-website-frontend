@@ -27,3 +27,12 @@
 //         return NextResponse.json({ error: "Error creating order" }, { status: 500 });
 //     }
 // }
+
+
+import { NextResponse } from "next/server";
+
+export async function POST() {
+  return NextResponse.json({
+    message: "Order creation disabled temporarily"
+  });
+}
