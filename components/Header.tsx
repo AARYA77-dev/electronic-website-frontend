@@ -25,7 +25,7 @@ import { useWishlistStore } from "@/app/_zustand/wishlistStore";
 // import NotificationElement from "./NotifictionElement";
 
 const Header = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const pathname = usePathname();
   const { wishlist, setWishlist, wishQuantity } = useWishlistStore();
   const [open, setOpen] = useState(false);
@@ -65,7 +65,7 @@ const Header = () => {
   const dropdownRef = useRef<any>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
+    const handleClickOutside = (e:any) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpen(false);
       }
@@ -76,6 +76,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   const getUserByEmail = async () => {
     if (session?.user?.email) {
 
