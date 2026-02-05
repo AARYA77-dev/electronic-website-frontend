@@ -8,7 +8,7 @@ export default function Home() {
     <IntroducingSection />
     <CategoryMenu />
     <ProductsSection />
-    <Newsletter></Newsletter>
+    {/* <Newsletter></Newsletter> */}
     <Incentives></Incentives>
     </>
   );

@@ -102,7 +102,7 @@ const DashboardProductTable = () => {
                     </span>) }
                     
                   </td>
-                  <td>${product?.price}</td>
+                  <td>₹{product?.price}</td>
                   <th>
                     <Link
                       href={`/admin/products/${product.id}`}

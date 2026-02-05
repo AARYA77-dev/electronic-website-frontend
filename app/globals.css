@@ -224,7 +224,7 @@
   width: 100%;
 }
 
-.wrapper:hover .item{
+.wrapper:hover .item {
   animation-play-state: paused;
 }
 
@@ -234,15 +234,20 @@
   height: 100%;
   top: 0;
   left: 0;
-  animation: slideInOut 20s infinite;
-  animation-timing-function: ease-in-out;
+  animation: slideInOut 20s infinite ease-in-out;
+  animation-fill-mode: backwards;
   opacity: 0;
 }
 
-.item1 { animation-delay: 0s; }
-.item2 { animation-delay: 5s; }
-.item3 { animation-delay: 10s; }
-.item4 { animation-delay: 15s; }
+.item1 {
+  animation-delay: -5s;
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.item2 { animation-delay: 0s; }
+.item3 { animation-delay: 5s; }
+.item4 { animation-delay: 10s; }
 
 @keyframes slideInOut {
   0% { transform: translateX(100%); opacity: 0; }
