@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,12 +13,18 @@ export async function POST(req: NextRequest) {
     });
 
     if (!product || product.quantity < quantity) {
-      return NextResponse.json({ error: "Insufficient stock" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Insufficient stock" },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Stock check error:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
