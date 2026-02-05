@@ -33,7 +33,7 @@ const Header = () => {
     setTimeout(() => signOut(), 1000);
     toast.success("Logout successful!");
   };
-    console.log(session,"checking")
+    console.log(session,"checking",pathname.startsWith("/admin") === true)
   // getting all wishlist items by user id
   const getWishlistByUserId = async (id: string) => {
     const response = await fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${id}`, {
@@ -111,7 +111,7 @@ const Header = () => {
               <div onClick={() => setOpen(!open)} role="button" className="mt-[12%] w-10">
                 <FaUser className="text-2xl text-black active:animate-pop " />
               </div>
-              {open && session && <ul
+              {open && session?.user && <ul
                 className="dropdown-content z-[1] active:animate-pop menu p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
@@ -206,7 +206,7 @@ const Header = () => {
               <div onClick={() => setOpen(!open)} role="button" className="w-10 active:animate-pop">
                 <FaUser className="text-2xl text-black" />
               </div>
-              <ul
+             {open && <ul
                 className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
@@ -219,7 +219,7 @@ const Header = () => {
                 }} >
                   <a href="#">Logout</a>
                 </li>
-              </ul>
+              </ul>}
             </div>
           </div>
 
