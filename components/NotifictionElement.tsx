@@ -12,13 +12,13 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { FaBell } from 'react-icons/fa6'
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 import { useNotificationStore } from '@/app/_zustand/useNotification';
 
 
 
-const socket = io('http://localhost:3001');
+// const socket = io('http://localhost:3001');
 
 interface Notification {
   id: number;
@@ -35,29 +35,29 @@ const NotificationElement = () => {
   const setNotifications = useNotificationStore((state) => state.setNotifications);
   const addNotification = useNotificationStore((state) => state.addNotification);
   
-  useEffect(() => {
-    fetch('https://electronic-website-backend.onrender.com/api/notifications')
-      .then((res) => res.json())
-      .then((data) => setNotifications(data));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://electronic-website-backend.onrender.com/api/notifications')
+  //     .then((res) => res.json())
+  //     .then((data) => setNotifications(data));
+  // }, []);
 
-    useEffect(() => {
-        socket.on('orderStatusChanged', (data) => {
-          addNotification(
-            {
-              id: Date.now(),
-              order_id: data.orderId,
-              customer_name: data.customer,
-              status: data.newStatus,
-              total: data.total,
-              created_at: new Date().toLocaleString(),
-            },
-          );
-        });
-      return () => {
-      socket.off('orderStatusChanged');
-    };
-  }, []);
+  //   useEffect(() => {
+  //       socket.on('orderStatusChanged', (data) => {
+  //         addNotification(
+  //           {
+  //             id: Date.now(),
+  //             order_id: data.orderId,
+  //             customer_name: data.customer,
+  //             status: data.newStatus,
+  //             total: data.total,
+  //             created_at: new Date().toLocaleString(),
+  //           },
+  //         );
+  //       });
+  //     return () => {
+  //     socket.off('orderStatusChanged');
+  //   };
+  // }, []);
 
 
   return (

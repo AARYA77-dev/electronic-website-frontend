@@ -1,9 +1,9 @@
 'use client';
 import { SectionTitle } from '@/components';
 import { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
-const socket = io('http://localhost:3001');
+// const socket = io('http://localhost:3001');
 import { useNotificationStore } from '@/app/_zustand/useNotification';
 
 interface Notification {
@@ -24,33 +24,33 @@ export default function OrderStatusNotification() {
   const deleteNotificationFromStore = useNotificationStore((state) => state.deleteNotification);
 
 
-  useEffect(() => {
-    socket.on('orderStatusChanged',()=>{
-      fetch('https://electronic-website-backend.onrender.com/api/notifications')
-      .then((res)=>res.json())
-      .then((data)=>setNotifications(data));
-    });
-    return()=>{socket.off('orderStatusChanged')};
-  }, []);
+  // useEffect(() => {
+  //   socket.on('orderStatusChanged',()=>{
+  //     fetch('https://electronic-website-backend.onrender.com/api/notifications')
+  //     .then((res)=>res.json())
+  //     .then((data)=>setNotifications(data));
+  //   });
+  //   return()=>{socket.off('orderStatusChanged')};
+  // }, []);
 
   
-  useEffect(() => {
-    socket.on('orderStatusChanged', (data) => {
-      addNotification(
-        {
-          id: Date.now(),
-          order_id: data.orderId,
-          customer_name: data.customer,
-          status: data.newStatus,
-          total: data.total,
-          created_at: new Date().toLocaleString(),
-        },
-      );
-    });
-    return () => {
-      socket.off('orderStatusChanged');
-    };
-  }, []);
+  // useEffect(() => {
+  //   socket.on('orderStatusChanged', (data) => {
+  //     addNotification(
+  //       {
+  //         id: Date.now(),
+  //         order_id: data.orderId,
+  //         customer_name: data.customer,
+  //         status: data.newStatus,
+  //         total: data.total,
+  //         created_at: new Date().toLocaleString(),
+  //       },
+  //     );
+  //   });
+  //   return () => {
+  //     socket.off('orderStatusChanged');
+  //   };
+  // }, []);
 
   const deleteNotification = async (id: number) => {
     const res = await fetch(`https://electronic-website-backend.onrender.com/api/notifications/${id}`, {
