@@ -33,7 +33,7 @@ const Header = () => {
     setTimeout(() => signOut(), 1000);
     toast.success("Logout successful!");
   };
-    console.log(session,"checking",pathname.startsWith("/admin") === true)
+  console.log(session, "checking",open, pathname.startsWith("/admin") === true)
   // getting all wishlist items by user id
   const getWishlistByUserId = async (id: string) => {
     const response = await fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${id}`, {
@@ -65,10 +65,12 @@ const Header = () => {
   const dropdownRef = useRef<any>(null);
 
   useEffect(() => {
-    const handleClickOutside = (e:any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+    const handleClickOutside = (e: any) => {
+      console.log("checking11",dropdownRef.current.contains(e.target))
+      if (!dropdownRef.current) return;
+       if (!dropdownRef.current?.contains(e.target)) {
         setOpen(false);
-      }
+       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -76,6 +78,7 @@ const Header = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
 
   const getUserByEmail = async () => {
     if (session?.user?.email) {
@@ -95,7 +98,7 @@ const Header = () => {
   }, [session?.user?.email, wishlist.length]);
 
   return (
-    <header className="bg-white">
+    <header className="bg-white" ref={dropdownRef}>
       <HeaderTop />
       {pathname.startsWith("/admin") === false && (
         <div className="h-32 bg-white flex items-center justify-between px-16 max-[1320px]:px-16 max-md:px-6 max-lg:flex-col max-lg:gap-y-7 max-lg:justify-center max-lg:h-60 max-w-screen-2xl mx-auto">
@@ -165,7 +168,7 @@ const Header = () => {
                   width={30}
                   height={30}
                   className="w-full h-full rounded-full"
-                /> 
+                />
                 <FaUser className="text-2xl text-black" />
               </div>
               {open && (
@@ -202,7 +205,7 @@ const Header = () => {
             />
           </Link>
           <div className="flex gap-x-5 items-center">
-            <div ref={dropdownRef} className="dropdown dropdown-end">
+            <div className="dropdown dropdown-end">
               <div onClick={() => setOpen(!open)} role="button" className="w-10 active:animate-pop">
                 <FaUser className="text-2xl text-black" />
               </div>
