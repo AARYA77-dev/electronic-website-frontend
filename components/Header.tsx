@@ -33,7 +33,7 @@ const Header = () => {
     setTimeout(() => signOut(), 1000);
     toast.success("Logout successful!");
   };
-
+    console.log(session,"checking")
   // getting all wishlist items by user id
   const getWishlistByUserId = async (id: string) => {
     const response = await fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${id}`, {
@@ -103,7 +103,6 @@ const Header = () => {
             <Image src="/logo v1 red.png" width={300} height={300} alt="singitronic logo" className="relative right-5 max-[1023px]:w-56 active:animate-pop " />
           </Link>
           <SearchInput />
-          {console.log(session,"checking")}
           <div className="flex gap-x-10">
             <HeartElement wishQuantity={wishQuantity} />
             <CartElement />
