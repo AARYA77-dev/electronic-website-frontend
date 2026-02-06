@@ -23,7 +23,7 @@ const ProductItem = ({
   return (
     <div className="flex flex-col justify-between items-center gap-y-2 w-full bg-white rounded-[20px] md:rounded-[30px] shadow-[0_8px_20px_rgba(0,0,0,0.20)] transition-all duration-300 hover:shadow-lg hover:scale-105 p-2 sm:p-3 md:p-4">
 
-  <Link href={`/product/${product.slug}`} className="w-full flex justify-center">
+  <Link href={`/product/${product.id}`} className="w-full flex justify-center">
 
     <Image
       src={
@@ -47,7 +47,7 @@ const ProductItem = ({
 
   {/* Title */}
   <Link
-    href={`/product/${product.slug}`}
+    href={`/product/${product.id}`}
     className="
       text-sm 
       sm:text-base 
@@ -70,7 +70,7 @@ const ProductItem = ({
 
   {/* Button */}
   <Link
-    href={`/product/${product.slug}`}
+    href={`/product/${product.id}`}
     className="
       w-full 
       text-center 

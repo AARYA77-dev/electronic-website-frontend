@@ -18,11 +18,10 @@ interface ImageItem {
   productID: string;
   image: string;
 }
-
 const SingleProductPage = async ({ params }: SingleProductPageProps) => {
   // sending API request for a single product with a given product slug
   const data = await fetch(
-    `https://electronic-website-backend.onrender.com/api/slugs/${params.productSlug}`, {
+    `https://electronic-website-backend.onrender.com/api/slugs/${params.id}`, {
     cache: "no-store"
   }
   );

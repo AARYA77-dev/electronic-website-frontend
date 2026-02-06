@@ -16,6 +16,7 @@ interface Product {
 interface SingleProductPageProps {
   params: {
     productSlug: string;
+    id: any;
   };
 }
 

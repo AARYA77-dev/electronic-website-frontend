@@ -18,28 +18,27 @@ const Hero = () => {
     {
       title: "THE PRODUCT OF THE FUTURE",
       image: "/watch for banner.png",
-      link: "/product/smart-watch-demo"
+      link: "/product/10"
     },
     {
       title: "THE PRODUCT OF THE FUTURE",
       image: "/laptop_2.png",
-      link: "/product/notebook-horizon-demo"
+      link: "/product/11"
     },
     {
       title: "THE PRODUCT OF THE FUTURE",
       image: "/headphones_1.png",
-      link: "/product/wireless-headphones-demo"
+      link: "/product/6"
     },
     {
       title: "THE PRODUCT OF THE FUTURE",
       image: "/smart_phone_3.png",
-      link: "/product/smart-phone-demo"
+      link: "/product/1"
     }
   ];
 
   return (
     <div className="wrapper w-full min-h-[600px] md:min-h-[650px] lg:min-h-[700px]">
-
       {slides.map((slide, index) => (
         <div
           key={index}

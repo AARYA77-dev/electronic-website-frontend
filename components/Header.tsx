@@ -89,7 +89,7 @@ const Header = () => {
   }, [session?.user?.email, wishlist.length]);
 
   return (
-    <header className="bg-white">
+    <header className="bg-white mt-[10px]">
 
       <HeaderTop />
 
@@ -135,7 +135,7 @@ const Header = () => {
                 <div
                   tabIndex={0}
                   role="button"
-                  className="w-10 flex items-center justify-center cursor-pointer"
+                  className="w-10 mt-[2px] flex items-center justify-center cursor-pointer"
                 >
                   <FaUser className="text-2xl text-black active:animate-pop" />
                 </div>
