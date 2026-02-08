@@ -5,8 +5,6 @@ import { useWishlistStore } from "../_zustand/wishlistStore";
 import { nanoid } from "nanoid";
 import { useSession } from "next-auth/react";
 
-
-
 const WishlistPage = () => {
   const { data: session, status } = useSession();
   const { wishlist, setWishlist } = useWishlistStore();

@@ -9,28 +9,30 @@
 // *********************
 
 "use client";
-import { useWishlistStore } from "@/app/_zustand/wishlistStore";
+import { useProductStore } from "@/app/_zustand/store";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaHeartCrack } from "react-icons/fa6";
+import { FaTrash } from "react-icons/fa6";
 import { useSession } from "next-auth/react";
 
-const WishItem = ({
+const CartItem = ({
   id,
   title,
+  // price,
   image,
   slug,
   stockAvailabillity,
+  quantity
 }: ProductInWishlist) => {
   const { data: session, status } = useSession();
-  const { removeFromWishlist } = useWishlistStore();
+  const { removeFromCart, calculateTotals } = useProductStore();
   const router = useRouter();
   const [userId, setUserId] = useState<string>();
 
   const openProduct = (slug: string): void => {
-    router.push(`/product/${slug}`);
+    router.push(`/cart`);
   };
 
   const getUserByEmail = async () => {
@@ -45,35 +47,37 @@ const WishItem = ({
     }
   };
 
-  const deleteItemFromWishlist = async (productId: string) => {
-    
-    if (userId) {
+  const deleteItemFromCart = async (productId: string) => {
 
-      fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${userId}/${productId}`, {method: "DELETE"}).then(
+    if (userId) {
+      fetch(`https://electronic-website-backend.onrender.com/api/cart/${userId}/${productId}`, { method: "DELETE" }).then(
         (response) => {
-          removeFromWishlist(productId);
-          toast.success("Item removed from your wishlist");
+          removeFromCart(productId);
+          calculateTotals();
+          toast.success("Item removed from your cart");
         }
       );
-    }else{
-      toast.error("You need to be logged in to perform this action");
+    } else {
+      calculateTotals();
+      removeFromCart(productId);
+      toast.success("Item removed from your cart");
     }
   };
 
   useEffect(() => {
     getUserByEmail();
-  }, [session?.user?.email]);
+  }, []);
 
   return (
     <tr className="hover:bg-gray-100 cursor-pointer">
-      <th
-        className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
-      >
-        {id}
-      </th>
-      <th>
-        <div className="w-12 h-12 mx-auto" onClick={() => openProduct(slug)}>
+      {/* <th
+               className="text-black text-sm text-center"
+              
+             >
+               {id}
+             </th> */}
+      <th onClick={() => openProduct(slug)}>
+        <div className="w-12 h-12 mx-auto">
           <Image
             src={`/${image}`}
             width={200}
@@ -83,15 +87,14 @@ const WishItem = ({
           />
         </div>
       </th>
-      <td
-        className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
+      <td onClick={() => openProduct(slug)}
+        className="text-black text-sm text-center"     
       >
         {title}
       </td>
-      <td
+      <td onClick={() => openProduct(slug)}
         className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
+      
       >
         {stockAvailabillity ? (
           <span className="text-success">In stock</span>
@@ -99,14 +102,15 @@ const WishItem = ({
           <span className="text-error">Out of stock</span>
         )}
       </td>
+      <td onClick={() => openProduct(slug)} className="text-black text-sm text-center">{quantity}</td>
       <td>
         <button className="btn btn-xs bg-primary text-white hover:text-primary border border-primary hover:bg-white hover:text-primary text-sm">
-          <FaHeartCrack />
+          <FaTrash />
           <span
             className="max-sm:hidden"
-            onClick={() => deleteItemFromWishlist(id)}
+            onClick={() => deleteItemFromCart(id)}
           >
-            remove from the wishlist
+            remove from the cart
           </span>
         </button>
       </td>
@@ -114,4 +118,4 @@ const WishItem = ({
   );
 };
 
-export default WishItem;
+export default CartItem;

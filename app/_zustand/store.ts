@@ -2,12 +2,13 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 export type ProductInCart = {
-  quantityCount: number;
   quantity: number;
   id: string;
   title: string;
   price: number;
   image: string;
+  slug: string;
+  stockAvailabillity: number;
   amount: number;
 };
 
@@ -20,6 +21,7 @@ export type State = {
 export type Actions = {
   addToCart: (newProduct: ProductInCart) => void;
   removeFromCart: (id: string) => void;
+  setCart: (wishlist: ProductInCart[]) => void;
   updateCartAmount: (id: string, quantity: number) => void;
   calculateTotals: () => void;
   clearCart: () => void;
@@ -50,7 +52,6 @@ export const useProductStore = create<State & Actions>()(
       },
       clearCart: () => {
         set((state: any) => {
-          
           return {
             products: [],
             allQuantity: 0,
@@ -75,12 +76,17 @@ export const useProductStore = create<State & Actions>()(
             amount += item.amount;
             total += item.amount * item.price;
           });
-
+console.log(state.products,"checking")
           return {
             products: state.products,
             allQuantity: amount,
             total: total,
           };
+        });
+      },
+      setCart: (product: ProductInCart[]) => {
+        set((state) => {
+          return { products: [...product], total: product.length };
         });
       },
       updateCartAmount: (id, amount) => {

@@ -28,6 +28,7 @@ model Product {
   category       Category                 @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   customerOrders customer_order_product[]
   Wishlist       Wishlist[]
+  cartItems      CartItem[]
 }
 
 model Image {
@@ -50,6 +51,7 @@ model User {
   postalCode     String
   role     String?    @default("user")
   Wishlist Wishlist[]
+  cartItems CartItem[]
 }
 
 model Customer_order {
@@ -92,4 +94,16 @@ model Wishlist {
   productId String
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
+}
+
+model CartItem {
+  id        String  @id @default(uuid())
+  quantity  Int
+  userId    String
+  productId String
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId]) // prevents duplicate same product in cart
 }

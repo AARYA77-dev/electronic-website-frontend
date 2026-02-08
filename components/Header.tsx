@@ -23,13 +23,15 @@ import { signOut, useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { useWishlistStore } from "@/app/_zustand/wishlistStore";
 import { FaUser } from "react-icons/fa6";
+import { useProductStore } from "@/app/_zustand/store";
 // import NotificationElement from "./NotifictionElement";
 
 const Header = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
   const { wishlist, setWishlist, wishQuantity } = useWishlistStore();
-
+  const { setCart, clearCart, calculateTotals } =
+    useProductStore();
 
   const closeDropdown = () => {
     (document.activeElement as HTMLElement)?.blur();
@@ -38,10 +40,43 @@ const Header = () => {
   const handleLogout = () => {
     closeDropdown();
     setTimeout(() => signOut(), 1000);
+    clearCart()
     toast.success("Logout successful!");
   };
 
-  // getting all wishlist items by user id
+  // getting all wishlist and cart items by user id
+  const getCartByUserId = async (id: string) => {
+    const response = await fetch(`https://electronic-website-backend.onrender.com/api/cart/${id}`, {
+      cache: "no-store",
+    });
+    const cart = await response.json();
+    const productArray: {
+      id: string;
+      title: string;
+      price: number;
+      image: string;
+      slug: string;
+      stockAvailabillity: number;
+      quantity: 1
+      // quantityCount: number;
+      amount: number;
+    }[] = [];
+
+    cart && cart.map((item: any) => productArray.push({
+      id: item?.product?.id,
+      title: item?.product?.title,
+      price: item?.product?.price,
+      image: item?.product?.mainImage,
+      slug: item?.product?.slug,
+      stockAvailabillity: item?.product?.inStock,
+      quantity: item?.product?.quantity,
+      // quantityCount: item?.product?.quantityCount,
+      amount: item?.quantity,
+    }));
+    setCart(productArray);
+    calculateTotals();
+  };
+
   const getWishlistByUserId = async (id: string) => {
     const response = await fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${id}`, {
       cache: "no-store",
@@ -80,6 +115,7 @@ const Header = () => {
         .then((response) => response.json())
         .then((data) => {
           getWishlistByUserId(data?.id);
+          getCartByUserId(data?.id);
         });
     }
   };

@@ -28,7 +28,7 @@ const Hero = () => {
     {
       title: "THE PRODUCT OF THE FUTURE",
       image: "/headphones_1.png",
-      link: "/product/6"
+      link: "/product/9"
     },
     {
       title: "THE PRODUCT OF THE FUTURE",

@@ -28,8 +28,10 @@ const BuyNowSingleProductBtn = ({
       price: product?.price,
       image: product?.mainImage,
       amount: quantityCount,
-      quantityCount: 0,
-      quantity: product?.quantity
+      // quantityCount: 0,
+      quantity: product?.quantity,
+      slug: product.slug,
+      stockAvailabillity: product.inStock
     });
     calculateTotals();
     toast.success("Product added to the cart");
@@ -37,6 +39,7 @@ const BuyNowSingleProductBtn = ({
   };
   return (
     <button
+    disabled={product.quantity===0}
       onClick={handleAddToCart}
       className="btn w-[200px] text-lg border border-secondary hover:border-secondary border-1 font-normal bg-secondary text-white hover:bg-tertiary hover:scale-110 hover:text-secondary transition-all uppercase ease-in max-[500px]:w-full"
     >

@@ -33,6 +33,7 @@ export { default as CartElement } from "./CartElement";
 export { default as ProductItemRating } from "./ProductItemRating";
 export { default as SortBy } from "./SortBy";
 export { default as WishItem } from "./WishItem";
+export { default as CartItem } from "./CartItem";
 export { default as SectionTitle } from "./SectionTitle";
 export { default as HeartElement } from "./HeartElement";
 export { default as AddToWishlistBtn } from "./AddToWishlistBtn";

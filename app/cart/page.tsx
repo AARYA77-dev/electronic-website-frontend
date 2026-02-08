@@ -7,21 +7,50 @@ import {
   SectionTitle,
 } from "@/components";
 import Image from "next/image";
-import React from "react";
-import { FaCheck, FaClock, FaCircleQuestion, FaXmark } from "react-icons/fa6";
+import React, { useEffect, useState } from "react";
+import { FaCheck, FaCircleQuestion, FaXmark, FaX } from "react-icons/fa6";
 import { useProductStore } from "../_zustand/store";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 const CartPage = () => {
   const { products, removeFromCart, calculateTotals, total } =
     useProductStore();
+  const { data: session } = useSession();
+  const [userId, setUserId] = useState<string>();
 
-  const handleRemoveItem = (id: string) => {
-    removeFromCart(id);
-    calculateTotals();
-    toast.success("Product removed from the cart");
+  const getUserByEmail = async () => {
+    if (session?.user?.email) {
+      fetch(`https://electronic-website-backend.onrender.com/api/users/email/${session?.user?.email}`, {
+        cache: "no-store",
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setUserId(data?.id);
+        });
+    }
   };
+  const handleRemoveItem = (id: string) => {
+    if (userId) {
+      fetch(`https://electronic-website-backend.onrender.com/api/cart/${userId}/${id}`, { method: "DELETE" }).then(
+        (response) => {
+          removeFromCart(id);
+          toast.success("Product removed from your cart");
+          calculateTotals();
+        }
+      );
+    } else {
+      removeFromCart(id);
+      toast.success("Product removed from your cart");
+      calculateTotals();
+    }
+  };
+
+  useEffect(() => {
+    calculateTotals()
+    getUserByEmail();
+  }, []);
 
   return (
     <div className="bg-white">
@@ -58,12 +87,11 @@ const CartPage = () => {
                         <div>
                           <div className="flex justify-between">
                             <h3 className="text-sm">
-                              <Link
-                                href={`#`}
+                              <p
                                 className="font-medium text-gray-700 hover:text-gray-800"
                               >
                                 {product.title}
-                              </Link>
+                              </p>
                             </h3>
                           </div>
                           {/* <div className="mt-1 flex text-sm">
@@ -93,19 +121,19 @@ const CartPage = () => {
                       </div>
 
                       <p className="mt-4 flex space-x-2 text-sm text-gray-700">
-                        {1 ? (
+                        {product.quantity > 0 ? (
                           <FaCheck
                             className="h-5 w-5 flex-shrink-0 text-green-500"
                             aria-hidden="true"
                           />
                         ) : (
-                          <FaClock
-                            className="h-5 w-5 flex-shrink-0 text-gray-300"
+                          <FaX
+                            className="h-5 w-5 flex-shrink-0 text-red-500"
                             aria-hidden="true"
                           />
                         )}
 
-                        <span>{1 ? "In stock" : `Ships in 3 days`}</span>
+                        <span>{product.quantity > 0 ? "In stock" : `out of stock`}</span>
                       </p>
                     </div>
                   </li>
