@@ -59,7 +59,7 @@ const AddToCartSingleProductBtn = ({ product, quantityCount }: SingleProductBtnP
         price: product?.price,
         image: product?.mainImage,
         amount: quantityCount,
-        quantityCount: 0,
+        // quantityCount: 0,
         quantity: product?.quantity,
         slug: product.slug,
         stockAvailabillity: product.inStock

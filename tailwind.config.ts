@@ -21,7 +21,7 @@ const config: Config = {
       colors: {
         'custom-yellow':'#FED700',
         'primary':'#03A9F4',
-        'secondary':'red',
+        'secondary':'#1C2A4E',
         'tertiary':'white',
         'animation-button':''
       }
