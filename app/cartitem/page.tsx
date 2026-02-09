@@ -24,8 +24,7 @@ const CartPage = () => {
             // quantityCount: number;
             amount: number;
         }[] = [];
-
-        cart && cart.map((item: any) => productArray.push({
+        Array.isArray(cart) && cart?.map((item: any) => productArray.push({
             id: item?.product?.id,
             title: item?.product?.title,
             price: item?.product?.price,

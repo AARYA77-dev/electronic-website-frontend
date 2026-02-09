@@ -32,6 +32,7 @@ const CheckoutPage = () => {
     city: '',
     country: '',
     postalCode: '',
+    id:""
   });
 
   const getUserByEmail = async () => {
@@ -186,6 +187,7 @@ const CheckoutPage = () => {
                 orderNotice: checkoutForm.orderNotice,
                 productId: products[0].id,
                 quantity: products[0].amount,
+                userId: user.id,
               }),
             });
 

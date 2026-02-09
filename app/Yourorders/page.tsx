@@ -12,18 +12,33 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const Yourorders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const response = await fetch("https://electronic-website-backend.onrender.com/api/orders");
+ const { data: session } = useSession();
+    const fetchOrders = async (id:string) => {
+      const response = await fetch(`http://localhost:3001/api/orders/${id}`);
       const data = await response.json();
       setOrders(data);
     };
-    fetchOrders();
-  }, []);
+
+  const getUserByEmail = async () => {
+      if (session?.user?.email) {
+  
+        fetch(`https://electronic-website-backend.onrender.com/api/users/email/${session?.user?.email}`, {
+          cache: "no-store",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+             fetchOrders(data?.id);
+          });
+      }
+    };
+  
+    useEffect(() => {
+      getUserByEmail();
+    }, [session?.user?.email]);
 
   return (
     <div className="xl:ml-5 w-full max-xl:mt-5 ">
@@ -84,7 +99,7 @@ const Yourorders = () => {
               ))}
           </tbody>
           {/* foot */}
-          <tfoot>
+          {/* <tfoot>
             <tr>
               <th></th>
               <th>Order ID</th>
@@ -94,7 +109,7 @@ const Yourorders = () => {
               <th>Date</th>
               <th></th>
             </tr>
-          </tfoot>
+          </tfoot> */}
         </table>
       </div>
     </div>
