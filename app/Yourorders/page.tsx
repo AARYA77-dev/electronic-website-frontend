@@ -18,7 +18,7 @@ const Yourorders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
  const { data: session } = useSession();
     const fetchOrders = async (id:string) => {
-      const response = await fetch(`http://localhost:3001/api/orders/${id}`);
+      const response = await fetch(`https://electronic-website-backend.onrender.com/api/orders/${id}`);
       const data = await response.json();
       setOrders(data);
     };
