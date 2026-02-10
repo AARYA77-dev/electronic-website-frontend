@@ -16,15 +16,18 @@ export type State = {
   products: ProductInCart[];
   allQuantity: number;
   total: number;
+  buyNow:ProductInCart[];
 };
 
 export type Actions = {
   addToCart: (newProduct: ProductInCart) => void;
+  addToBuyNow: (newProduct: ProductInCart) => void;
   removeFromCart: (id: string) => void;
   setCart: (wishlist: ProductInCart[]) => void;
   updateCartAmount: (id: string, quantity: number) => void;
   calculateTotals: () => void;
   clearCart: () => void;
+  clearBuyNow: () => void;
 };
 
 export const useProductStore = create<State & Actions>()(
@@ -33,6 +36,7 @@ export const useProductStore = create<State & Actions>()(
       products: [],
       allQuantity: 0,
       total: 0,
+      buyNow:[],
       addToCart: (newProduct) => {
         set((state) => {
           const cartItem = state.products.find(
@@ -50,12 +54,25 @@ export const useProductStore = create<State & Actions>()(
           return { products: [...state.products] };
         });
       },
+      addToBuyNow: (newProduct) => {
+        set((state) => {
+            return { buyNow: [...state.buyNow, newProduct] };
+        });
+      },
       clearCart: () => {
         set((state: any) => {
           return {
             products: [],
             allQuantity: 0,
             total: 0,
+            buyNow: []
+          };
+        });
+      },
+      clearBuyNow: () => {
+        set(() => {
+          return {
+            buyNow: []
           };
         });
       },
@@ -76,7 +93,6 @@ export const useProductStore = create<State & Actions>()(
             amount += item.amount;
             total += item.amount * item.price;
           });
-console.log(state.products,"checking")
           return {
             products: state.products,
             allQuantity: amount,

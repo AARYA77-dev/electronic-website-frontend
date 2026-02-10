@@ -23,6 +23,7 @@ declare global {
 
 const CheckoutPage = () => {
   const [loading, setLoading] = useState(false);
+  const [disablePayNowbtn, setDisablePayNowbtn] = useState(false);
   const { data: session, status } = useSession();
   const [useDefaultAddress, setUseDefaultAddress] = useState(false);
 
@@ -32,7 +33,7 @@ const CheckoutPage = () => {
     city: '',
     country: '',
     postalCode: '',
-    id:""
+    id: ""
   });
 
   const getUserByEmail = async () => {
@@ -67,191 +68,196 @@ const CheckoutPage = () => {
     postalCode: "",
     orderNotice: "",
   });
-  const { products, total, clearCart } = useProductStore();
+  const { products, total, clearCart,buyNow } = useProductStore();
   const router = useRouter();
 
-
+  const buyingItems = buyNow.length === 1 ? buyNow : products
+  const totalBuyingItems = buyNow.length === 1 ? buyNow[0].price : total
+console.log(buyNow)
   const handlePayment = async () => {
-  if (loading) return;
-  setLoading(true);
+    if (loading) return;
+    setLoading(true);
 
-  // ✅ Step 1: Validate all fields
-  if (
-    checkoutForm.name.length > 0 &&
-    checkoutForm.lastname.length > 0 &&
-    checkoutForm.phone.length > 0 &&
-    checkoutForm.email.length > 0 &&
-    checkoutForm.company.length > 0 &&
-    checkoutForm.adress.length > 0 &&
-    checkoutForm.apartment.length > 0 &&
-    checkoutForm.city.length > 0 &&
-    checkoutForm.country.length > 0 &&
-    checkoutForm.postalCode.length > 0
-  ) {
-    if (!isValidNameOrLastname(checkoutForm.name)) {
-      toast.error("You entered invalid format for name");
-      setLoading(false);
-      return;
-    }
-
-    if (!isValidNameOrLastname(checkoutForm.lastname)) {
-      toast.error("You entered invalid format for lastname");
-      setLoading(false);
-      return;
-    }
-
-    if (!isValidEmailAddressFormat(checkoutForm.email)) {
-      toast.error("You entered invalid format for email address");
-      setLoading(false);
-      return;
-    }
-
-    if (!isValidPhoneFormat(checkoutForm.phone)) {
-      toast.error("You entered invalid format for phone number");
-      setLoading(false);
-      return;
-    }
-
-        const outOfStockProducts: string[] = [];
-
-    for (let i = 0; i < products.length; i++) {
-      const stockCheck = await fetch("/api/check-stock", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: products[i].id,
-          quantity: products[i].amount,
-        }),
-      });
-
-      const stockData = await stockCheck.json();
-
-      if (!stockCheck.ok) {
-        outOfStockProducts.push(products[i].title || `Product ID: ${products[i].id}`);
+    // ✅ Step 1: Validate all fields
+    if (
+      checkoutForm.name.length > 0 &&
+      checkoutForm.lastname.length > 0 &&
+      checkoutForm.phone.length > 0 &&
+      checkoutForm.email.length > 0 &&
+      checkoutForm.company.length > 0 &&
+      checkoutForm.adress.length > 0 &&
+      checkoutForm.apartment.length > 0 &&
+      checkoutForm.city.length > 0 &&
+      checkoutForm.country.length > 0 &&
+      checkoutForm.postalCode.length > 0
+    ) {
+      if (!isValidNameOrLastname(checkoutForm.name)) {
+        toast.error("You entered invalid format for name");
+        setLoading(false);
+        return;
       }
-    }
 
-    if (outOfStockProducts.length > 0) {
-      toast.error(`Out of stock: ${outOfStockProducts.join(", ")}`);
-      setLoading(false);
-      return;
-    }
+      if (!isValidNameOrLastname(checkoutForm.lastname)) {
+        toast.error("You entered invalid format for lastname");
+        setLoading(false);
+        return;
+      }
 
-     const tax = total / 5;
-  const shipping = 5;
-  const finalAmount = Math.round(total + tax + shipping)
-    
-    // ✅ Step 2: Create Razorpay Order
-    try {
-      const orderRes = await fetch("/api/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: finalAmount }),
-      });
+      if (!isValidEmailAddressFormat(checkoutForm.email)) {
+        toast.error("You entered invalid format for email address");
+        setLoading(false);
+        return;
+      }
 
-      const orderData = await orderRes.json();
-      if (!orderRes.ok)
-        throw new Error(orderData.error || "Failed to create Razorpay order");
+      if (!isValidPhoneFormat(checkoutForm.phone)) {
+        toast.error("You entered invalid format for phone number");
+        setLoading(false);
+        return;
+      }
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: orderData.finalAmount,
-        currency: "INR",
-        name: "Singitronic",
-        description: "Product Purchase",
-        image: "/logo v1 red.png",
-        order_id: orderData.id,
-        handler: async function (response: any) {
-          // ✅ Payment successful — create order
-          try {
-            const orderRes = await fetch("https://electronic-website-backend.onrender.com/api/orders", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                name: checkoutForm.name,
-                lastname: checkoutForm.lastname,
-                phone: checkoutForm.phone,
-                email: checkoutForm.email,
-                company: checkoutForm.company,
-                adress: checkoutForm.adress,
-                apartment: checkoutForm.apartment,
-                postalCode: checkoutForm.postalCode,
-                status: "processing",
-                total: finalAmount,
-                city: checkoutForm.city,
-                country: checkoutForm.country,
-                orderNotice: checkoutForm.orderNotice,
-                productId: products[0].id,
-                quantity: products[0].amount,
-                userId: user.id,
-              }),
-            });
+      const outOfStockProducts: string[] = [];
 
-            if (!orderRes.ok) {
-              const errorData = await orderRes.json();
-              throw new Error(errorData.error || "Order save failed");
+      for (let i = 0; i < buyingItems.length; i++) {
+        const stockCheck = await fetch("/api/check-stock", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: buyingItems[i].id,
+            quantity: buyingItems[i].amount,
+          }),
+        });
+
+        const stockData = await stockCheck.json();
+
+        if (!stockCheck.ok) {
+          outOfStockProducts.push(buyingItems[i].title || `Product ID: ${buyingItems[i].id}`);
+        }
+      }
+
+      if (outOfStockProducts.length > 0) {
+        toast.error(`Out of stock: ${outOfStockProducts.join(", ")}`);
+        setLoading(false);
+        return;
+      }
+
+      const tax = totalBuyingItems / 5;
+      const shipping = 5;
+      const finalAmount = Math.round(totalBuyingItems + tax + shipping)
+
+      // ✅ Step 2: Create Razorpay Order
+      try {
+        const orderRes = await fetch("/api/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount: finalAmount }),
+        });
+        setDisablePayNowbtn(true)
+        const orderData = await orderRes.json();
+        if (!orderRes.ok)
+          throw new Error(orderData.error || "Failed to create Razorpay order");
+
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: orderData.finalAmount,
+          currency: "INR",
+          name: "Singitronic",
+          description: "Product Purchase",
+          image: "/logo v1 red.png",
+          order_id: orderData.id,
+          handler: async function (response: any) {
+            // ✅ Payment successful — create order
+            try {
+              const orderRes = await fetch("https://electronic-website-backend.onrender.com/api/orders", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: checkoutForm.name,
+                  lastname: checkoutForm.lastname,
+                  phone: checkoutForm.phone,
+                  email: checkoutForm.email,
+                  company: checkoutForm.company,
+                  adress: checkoutForm.adress,
+                  apartment: checkoutForm.apartment,
+                  postalCode: checkoutForm.postalCode,
+                  status: "processing",
+                  total: finalAmount,
+                  city: checkoutForm.city,
+                  country: checkoutForm.country,
+                  orderNotice: checkoutForm.orderNotice,
+                  productId: buyingItems[0].id,
+                  quantity: buyingItems[0].amount,
+                  userId: user.id,
+                }),
+              });
+
+              if (!orderRes.ok) {
+                const errorData = await orderRes.json();
+                throw new Error(errorData.error || "Order save failed");
+              }
+
+              const savedOrder = await orderRes.json();
+              const orderId = savedOrder.id;
+
+              for (let i = 0; i < buyingItems.length; i++) {
+                await addOrderProduct(orderId, buyingItems[i].id, buyingItems[i].amount);
+              }
+
+              setCheckoutForm({
+                name: "",
+                lastname: "",
+                phone: "",
+                email: "",
+                company: "",
+                adress: "",
+                apartment: "",
+                city: "",
+                country: "",
+                postalCode: "",
+                orderNotice: "",
+              });
+
+              clearCart();
+              toast.success("Order placed successfully!");
+              router.push("/");
+            } catch (err: any) {
+              setDisablePayNowbtn(false);
+              toast.error("Payment successful, but order saving failed.");
+              console.error(err.message);
             }
+          },
+          prefill: {
+            name: checkoutForm.name,
+            email: checkoutForm.email,
+            contact: checkoutForm.phone,
+          },
+          notes: {
+            address: checkoutForm.adress,
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
 
-            const savedOrder = await orderRes.json();
-            const orderId = savedOrder.id;
-
-            for (let i = 0; i < products.length; i++) {
-              await addOrderProduct(orderId, products[i].id, products[i].amount);
-            }
-
-            setCheckoutForm({
-              name: "",
-              lastname: "",
-              phone: "",
-              email: "",
-              company: "",
-              adress: "",
-              apartment: "",
-              city: "",
-              country: "",
-              postalCode: "",
-              orderNotice: "",
-            });
-
-            clearCart();
-            toast.success("Order placed successfully!");
-            router.push("/");
-          } catch (err: any) {
-            toast.error("Payment successful, but order saving failed.");
-            console.error(err.message);
-          }
-        },
-        prefill: {
-          name: checkoutForm.name,
-          email: checkoutForm.email,
-          contact: checkoutForm.phone,
-        },
-        notes: {
-          address: checkoutForm.adress,
-        },
-        theme: {
-          color: "#3399cc",
-        },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
-      rzp.on("payment.failed", function (response: any) {
-        toast.error("Payment failed. Please try again.");
-        console.error(response.error);
-      });
-    } catch (error: any) {
-      toast.error(`Error: ${error.message}`);
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+        rzp.on("payment.failed", function (response: any) {
+          toast.error("Payment failed. Please try again.");
+          console.error(response.error);
+        });
+      } catch (error: any) {
+        setDisablePayNowbtn(false);
+        toast.error(`Error: ${error.message}`);
+      }
+    } else {
+      setDisablePayNowbtn(false);
+      toast.error("Please fill all required fields");
     }
-  } else {
-    toast.error("Please fill all required fields");
-  }
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
 
   // ✅ Helper to save product-order relationship
@@ -273,12 +279,12 @@ const CheckoutPage = () => {
     });
   };
 
- useEffect(() => {
-   if (products.length === 0) {
-     toast.error("You don't have items in your cart");
-     router.push("/cart");
-   }
- }, []);
+  useEffect(() => {
+    if (buyingItems.length === 0) {
+      toast.error("You don't have items in your cart");
+      router.push("/cart");
+    }
+  }, []);
 
   return (
     <div className="bg-white">
@@ -315,7 +321,7 @@ const CheckoutPage = () => {
               role="list"
               className="divide-y divide-gray-200 text-sm font-medium text-gray-900"
             >
-              {products.map((product) => (
+              {buyingItems.map((product) => (
                 <li
                   key={product?.id}
                   className="flex items-start space-x-4 py-6"
@@ -342,7 +348,7 @@ const CheckoutPage = () => {
             <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Subtotal</dt>
-                <dd>₹{total}</dd>
+                <dd>₹{totalBuyingItems}</dd>
               </div>
 
               <div className="flex items-center justify-between">
@@ -352,13 +358,13 @@ const CheckoutPage = () => {
 
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Taxes</dt>
-                <dd>₹{total / 5}</dd>
+                <dd>₹{totalBuyingItems / 5}</dd>
               </div>
 
               <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt className="text-base">Total</dt>
                 <dd className="text-base">
-                  ₹{total === 0 ? 0 : Math.round(total + total / 5 + 5)}
+                  ₹{totalBuyingItems === 0 ? 0 : Math.round(totalBuyingItems + totalBuyingItems / 5 + 5)}
                 </dd>
               </div>
             </dl>
@@ -738,8 +744,8 @@ const CheckoutPage = () => {
               <button
                 type="button"
                 onClick={handlePayment}
-                disabled={loading}
-                className=" w-full rounded-md border border-transparent bg-secondary px-20 py-2 text-lg font-medium text-tertiary shadow-sm hover:bg-tertiary hover:border-secondary hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last"
+                disabled={loading || disablePayNowbtn}
+                className="w-full rounded-md border border-transparent bg-secondary px-20 py-2 text-lg font-medium text-tertiary shadow-sm hover:bg-tertiary hover:border-secondary hover:text-secondary focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 focus:ring-offset-gray-50 sm:order-last disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none disabled:bg-secondary disabled:text-tertiary disabled:border-transparent"
               >
                 {loading ? <div
                   className="spinner"

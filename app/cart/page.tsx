@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
 const CartPage = () => {
-  const { products, removeFromCart, calculateTotals, total } =
+  const { products, removeFromCart, clearBuyNow, calculateTotals, total } =
     useProductStore();
   const { data: session } = useSession();
   const [userId, setUserId] = useState<string>();
@@ -210,6 +210,7 @@ const CartPage = () => {
               {products.length > 0 && (
                 <div className="mt-6">
                   <Link
+                    onClick={clearBuyNow}
                     href="/checkout"
                     className="block flex justify-center items-center w-full uppercase bg-white px-4 py-3 text-base border border-black border-gray-300 font-bold text-secondary shadow-sm hover:bg-black hover:bg-gray-100 focus:outline-none focus:ring-2"
                   >

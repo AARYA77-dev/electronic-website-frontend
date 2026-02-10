@@ -5,7 +5,8 @@ import { Footer, Header } from "@/components";
 import SessionProvider from "@/utils/SessionProvider";
 import Providers from "@/Providers";
 import { getServerSession } from "next-auth";
-import 'svgmap/dist/svgMap.min.css';
+// import 'svgmap/dist/svgMap.min.css';
+import "./svgmap.css";
 import RouteChangeHandler from '@/components/RouteChangeHandler';
 import LinkInterceptor from '@/components/LinkInterceptor';
 import { LoaderProvider } from '@/context/LoaderContext';
@@ -13,9 +14,6 @@ import Loading from '@/components/loading';
 // _app.tsx or _document.tsx (inside <Head>)
 import Script from "next/script";
 import Head from "next/head";
-
-
-
 
 const inter = Inter({ subsets: ["latin"] });
 

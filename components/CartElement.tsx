@@ -15,13 +15,13 @@ import { FaCartShopping } from 'react-icons/fa6'
 import { useProductStore } from "@/app/_zustand/store";
 
 const CartElement = () => {
-    const { allQuantity,calculateTotals } = useProductStore();
+    const { allQuantity,calculateTotals, clearBuyNow} = useProductStore();
     useEffect(()=>{
       calculateTotals()
     },[])
   return (
     <div className="relative active:animate-pop">
-            <Link href="/cartitem">
+            <Link onClick={clearBuyNow} href="/cart">
             <div className='pt-[6px]'>
               <FaCartShopping className="text-2xl text-black" />
             </div>

@@ -19,28 +19,26 @@ const BuyNowSingleProductBtn = ({
   quantityCount,
 }: SingleProductBtnProps) => {
   const router = useRouter();
-  const { addToCart, calculateTotals } = useProductStore();
+  const { addToBuyNow,clearBuyNow } = useProductStore();
 
-  const handleAddToCart = () => {
-    addToCart({
+  const handleAddToBuyNow = () => {
+    clearBuyNow();
+    addToBuyNow({
       id: product?.id.toString(),
       title: product?.title,
       price: product?.price,
       image: product?.mainImage,
       amount: quantityCount,
-      // quantityCount: 0,
       quantity: product?.quantity,
       slug: product.slug,
       stockAvailabillity: product.inStock
     });
-    calculateTotals();
-    toast.success("Product added to the cart");
     router.push("/checkout");
   };
   return (
     <button
     disabled={product.quantity===0}
-      onClick={handleAddToCart}
+      onClick={handleAddToBuyNow}
       className="btn w-[200px] text-lg border border-secondary hover:border-secondary border-1 font-normal bg-secondary text-white hover:bg-tertiary hover:scale-110 hover:text-secondary transition-all uppercase ease-in max-[500px]:w-full"
     >
       Buy Now
