@@ -56,16 +56,12 @@ const YourOrderDetails = () => {
     total: 0,
   });
   const params = useParams<{ id: string }>();
-
-  const router = useRouter();
-console.log(order,params.id)
   useEffect(() => {
     const fetchOrderData = async () => {
       const response = await fetch(
-        `http://localhost:3001/api/orders/orderDetails/${params?.id}`
+        `https://electronic-website-backend.onrender.com/api/orders/orderDetails/${params?.id}`
       );
       const data: Order = await response.json();
-      console.log(data,"checking111")
       setOrder(data);
     };
 
@@ -74,7 +70,6 @@ console.log(order,params.id)
         `https://electronic-website-backend.onrender.com/api/order-product/${params?.id}`
       );
       const data: OrderProduct[] = await response.json();
-      console.log(data,"checking")
       setOrderProducts(data);
     };
 
