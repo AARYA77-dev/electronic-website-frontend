@@ -363,7 +363,7 @@ const CheckoutPage = () => {
               ))}
             </ul>
 
-            <dl className="hidden space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
+            <dl className="space-y-6 border-t border-gray-200 pt-6 text-sm font-medium text-gray-900 lg:block">
               <div className="flex items-center justify-between">
                 <dt className="text-gray-600">Subtotal</dt>
                 <dd>₹{totalBuyingItems}</dd>

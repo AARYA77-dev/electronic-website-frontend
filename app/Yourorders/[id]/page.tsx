@@ -182,7 +182,7 @@ const YourOrderDetails = () => {
 
         <div className="flex justify-between">
           <span>Tax (20%)</span>
-          <span>₹{(Math.round(order?.total / 1.2 - 5)) / 5}</span>
+          <span>₹{(Math.ceil(order?.total / 1.2 - 5)) / 5}</span>
         </div>
 
         <div className="flex justify-between">
