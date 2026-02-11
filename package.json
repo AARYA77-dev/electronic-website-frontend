@@ -19,6 +19,7 @@
     "express-fileupload": "^1.5.2",
     "flowbite-react": "^0.12.17",
     "libphonenumber-js": "^1.12.36",
+    "lodash.debounce": "^4.0.8",
     "mysql2": "^3.16.3",
     "nanoid": "^5.1.6",
     "next": "^16.1.6",
@@ -39,6 +40,7 @@
     "zustand": "^5.0.11"
   },
   "devDependencies": {
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

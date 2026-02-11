@@ -10,27 +10,57 @@
 
 "use client";
 import { ProductInCart, useProductStore } from "@/app/_zustand/store";
-import React, { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import debounce from "lodash.debounce";
 import { FaPlus } from "react-icons/fa6";
 import { FaMinus } from "react-icons/fa6";
 
-const QuantityInputCart = ({ product } : { product: ProductInCart }) => {
+const QuantityInputCart = ({ product ,userId} : { product: ProductInCart, userId?: any }) => {
   const [quantityCount, setQuantityCount] = useState<number>(product.amount);
   const { updateCartAmount, calculateTotals } = useProductStore();
+  const debouncedUpdate = useMemo(
+    () =>
+      debounce((newQuantity: number) => {
+         if (!userId) return;
+        fetch(
+          "https://electronic-website-backend.onrender.com/api/cart",
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+              userId,
+              productId:product.id,
+              quantity: newQuantity }),
+          }
+        );
+      }, 1000),
+    [product.id, userId]
+  );
 
-  const handleQuantityChange = (actionName: string): void => {
+ const handleQuantityChange = (actionName: string): void => {
+    let newQuantity = quantityCount;
+
     if (actionName === "plus") {
-      setQuantityCount(() => quantityCount + 1);
-      updateCartAmount(product.id, quantityCount + 1);
-      calculateTotals();
+      newQuantity = quantityCount + 1;
+    }
 
-      
-    } else if (actionName === "minus" && quantityCount !== 1) {
-      setQuantityCount(() => quantityCount - 1);
-      updateCartAmount(product.id, quantityCount - 1);
-      calculateTotals();
+    if (actionName === "minus" && quantityCount > 1) {
+      newQuantity = quantityCount - 1;
+    }
+
+    setQuantityCount(newQuantity);
+    updateCartAmount(product.id, newQuantity);
+    calculateTotals();
+    if(userId){
+      debouncedUpdate(newQuantity);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      debouncedUpdate.cancel();
+    };
+  }, [debouncedUpdate]);
 
   return (
     <div>

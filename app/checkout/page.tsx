@@ -49,6 +49,20 @@ const CheckoutPage = () => {
     }
   };
 
+
+  const handleClearCart = (userId: string) => {
+    fetch(`https://electronic-website-backend.onrender.com/api/cart/${userId}`, { method: "DELETE" })
+      .then((res) => {
+        console.log(res, "checking")
+        if (!res.ok) {
+          throw new Error("Failed to clear cart");
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  };
+
   useEffect(() => {
     getUserByEmail();
   }, [session?.user?.email]);
@@ -68,12 +82,11 @@ const CheckoutPage = () => {
     postalCode: "",
     orderNotice: "",
   });
-  const { products, total, clearCart,buyNow } = useProductStore();
+  const { products, total, clearCart, buyNow } = useProductStore();
   const router = useRouter();
 
   const buyingItems = buyNow.length === 1 ? buyNow : products
   const totalBuyingItems = buyNow.length === 1 ? buyNow[0].price : total
-console.log(buyNow)
   const handlePayment = async () => {
     if (loading) return;
     setLoading(true);
@@ -220,7 +233,12 @@ console.log(buyNow)
                 orderNotice: "",
               });
 
-              clearCart();
+              if (buyNow.length !== 1) {
+                clearCart();
+                if (user.id) {
+                  handleClearCart(user.id);
+                }
+              }
               toast.success("Order placed successfully!");
               router.push("/");
             } catch (err: any) {

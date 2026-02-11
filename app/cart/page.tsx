@@ -106,7 +106,7 @@ const CartPage = () => {
                         </div>
 
                         <div className="mt-4 sm:mt-0 sm:pr-9">
-                          <QuantityInputCart product={product} />
+                          <QuantityInputCart product={product} userId={userId} />
                           <div className="absolute right-0 top-0">
                             <button
                               onClick={() => handleRemoveItem(product.id)}
