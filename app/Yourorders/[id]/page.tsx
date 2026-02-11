@@ -177,7 +177,7 @@ const YourOrderDetails = () => {
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>₹{Math.round(order?.total / 1.2 - 5)}</span>
+          <span>₹{Math.ceil(order?.total / 1.2 - 5)}</span>
         </div>
 
         <div className="flex justify-between">
