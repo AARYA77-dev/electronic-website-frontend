@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const IntroducingSection = () => {
   return (
-    <div className="relative py-20 bg-gradient-to-b from-[#dae2f8] to-[#d6a4a4] md:to-[#d6e0ff] overflow-hidden">
+    <div className="relative py-20 bg-gradient-to-b from-[#dae2f8] to-[#d6e0ff] overflow-hidden">
 
       {/* Background Glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/40 blur-[120px] rounded-full opacity-60"></div>

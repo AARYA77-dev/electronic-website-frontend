@@ -28,7 +28,7 @@ const Hero = () => {
 
   return (
     /* Main wrapper preserved as requested */
-    <div className="wrapper w-full min-h-[600px] md:min-h-[650px] lg:min-h-[700px] bg-gradient-to-b from-[#dae2f8] to-[#d6a4a4] md:to-[#d6e0ff]">
+    <div className="wrapper w-full min-h-[600px] md:min-h-[650px] lg:min-h-[700px] bg-gradient-to-b from-[#dae2f8] to-[#d6e0ff]">
       {slides.map((slide, index) => (
         <div
           key={index}

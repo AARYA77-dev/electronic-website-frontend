@@ -6,7 +6,7 @@ import { categoryMenuList } from "@/lib/utils";
 const CategoryMenu = () => {
   return (
     <div className="relative py-20 overflow-hidden
-      bg-gradient-to-b from-[#dae2f8] to-[#d6a4a4] md:to-[#d6e0ff]
+      bg-gradient-to-b from-[#dae2f8] to-[#d6e0ff]
     ">
 
       {/* Soft Right Glow */}

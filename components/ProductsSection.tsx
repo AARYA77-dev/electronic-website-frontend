@@ -11,7 +11,7 @@ const ProductsSection = async () => {
 
   return (
     // Outer container with the soft blue gradient background
-    <div className="bg-gradient-to-b from-[#dae2f8] to-[#d6a4a4] md:to-[#d6e0ff] min-h-screen py-10">
+    <div className="bg-gradient-to-b from-[#dae2f8] to-[#d6e0ff] min-h-screen py-10">
        {/* Note: I adjusted the gradient above to match the periwinkle/blue vibe. 
            If you want exactly the image, use: from-[#cbd5f7] to-[#eef2ff] */}
       
