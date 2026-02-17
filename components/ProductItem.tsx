@@ -1,13 +1,3 @@
-// *********************
-// Role of the component: Product item component 
-// Name of the component: ProductItem.tsx
-// Developer: Aleksandar Kuzmanovic
-// Version: 1.0
-// Component call: <ProductItem product={product} color={color} />
-// Input parameters: { product: Product; color: string; }
-// Output: Product item component that contains product image, title, link to the single product page, price, button...
-// *********************
-
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
@@ -21,83 +11,103 @@ const ProductItem = ({
   color: string;
 }) => {
   return (
-    <div className="flex flex-col justify-between items-center gap-y-2 w-full bg-white rounded-[20px] md:rounded-[30px] shadow-[0_8px_20px_rgba(0,0,0,0.20)] transition-all duration-300 hover:shadow-lg hover:scale-105 p-2 sm:p-3 md:p-4">
-
-  <Link href={`/product/${product.id}`} className="w-full flex justify-center">
-
-    <Image
-      src={
-        product.mainImage
-          ? `/${product.mainImage}`
-          : "/product_placeholder.jpg"
-      }
-      width={300}
-      height={250}
-      alt={product.title}
+    <div
       className="
+        group
+        flex flex-col justify-between items-center gap-y-3 
         w-full 
-        h-[140px] 
-        sm:h-[160px] 
-        md:h-[200px] 
-        object-contain
+        h-full
+        /* Glassmorphism Background */
+        bg-gradient-to-br from-white/70 to-white/30 
+        backdrop-blur-md
+        border border-white/60
+        rounded-[30px] 
+        shadow-[0_8px_30px_rgba(0,0,0,0.05)] 
+        transition-all duration-300 
+        hover:shadow-[0_8px_30px_rgba(59,130,246,0.2)] 
+        hover:-translate-y-1
+        p-5
       "
-    />
+    >
+      <Link href={`/product/${product.id}`} className="w-full flex justify-center py-4">
+        <Image
+          src={
+            product.mainImage
+              ? `/${product.mainImage}`
+              : "/product_placeholder.jpg"
+          }
+          width={300}
+          height={250}
+          alt={product.title}
+          className="
+            w-full 
+            h-[140px] 
+            sm:h-[160px] 
+            md:h-[180px] 
+            object-contain
+            drop-shadow-lg
+            group-hover:scale-105
+            transition-transform duration-300
+          "
+        />
+      </Link>
 
-  </Link>
+      <div className="flex flex-col items-center gap-1 w-full">
+        {/* Title */}
+        <Link
+          href={`/product/${product.id}`}
+          className="
+            text-base 
+            md:text-lg 
+            text-slate-800 
+            font-medium 
+            text-center
+            tracking-wide
+            line-clamp-2
+          "
+        >
+          {product.title}
+        </Link>
 
-  {/* Title */}
-  <Link
-    href={`/product/${product.id}`}
-    className="
-      text-sm 
-      sm:text-base 
-      md:text-lg 
-      text-black 
-      font-semibold 
-      text-center
-      line-clamp-2
-    "
-  >
-    {product.title}
-  </Link>
+        {/* Price / Count - Styled to match the *22 look in image */}
+        <p className="text-lg md:text-xl font-medium text-slate-700">
+          <span className="text-slate-500 mr-1">₹</span>{product.price}
+        </p>
 
-  {/* Price */}
-  <p className="text-sm sm:text-base md:text-lg font-semibold">
-    ₹{product.price}
-  </p>
+        {/* Rating - Hidden to match image, remove 'hidden' class to show */}
+        <div className="hidden">
+           <ProductItemRating productRating={product.rating} />
+        </div>
+      </div>
 
-  <ProductItemRating productRating={product.rating} />
-
-  {/* Button */}
-  <Link
-    href={`/product/${product.id}`}
-    className="
-      w-full 
-      text-center 
-      rounded-[20px] 
-      md:rounded-[34px]
-      text-tertiary 
-      uppercase 
-      bg-secondary 
-      border-2 
-      border-secondary 
-      py-1.5 
-      sm:py-2
-      text-xs 
-      sm:text-sm 
-      md:text-base 
-      font-bold 
-      shadow-sm 
-      hover:text-secondary 
-      hover:bg-tertiary 
-      active:animate-pop
-    "
-  >
-    View Product
-  </Link>
-
-</div>
-
+      {/* Button */}
+      <Link
+        href={`/product/${product.id}`}
+        className="
+          w-full 
+          text-center 
+          rounded-full
+          text-white 
+          uppercase 
+          /* Blue Gradient Button */
+          bg-gradient-to-r from-[#3b5998] to-[#2563eb]
+          py-3
+          px-4
+          text-xs 
+          sm:text-sm 
+          font-bold 
+          tracking-wider
+          shadow-md 
+          hover:shadow-lg
+          hover:opacity-90
+          transform active:scale-95
+          transition-all
+          mt-2
+        "
+      >
+        View Product
+      </Link>
+    </div>
   );
 };
 

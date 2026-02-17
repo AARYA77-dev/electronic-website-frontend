@@ -125,113 +125,110 @@ const Header = () => {
   }, [session?.user?.email, wishlist.length]);
 
   return (
-    <header className="bg-white mt-[10px]">
+    <header className="sticky top-0 z-[100] w-full">
+      {/* Top bar with a slight transparency */}
+      <div className="bg-white/80 backdrop-blur-sm border-b border-white/20">
+        <HeaderTop />
+      </div>
 
-      <HeaderTop />
-
-      {/* ================= USER HEADER ================= */}
       {!pathname.startsWith("/admin") && (
         <div className="
-  bg-white
-  flex flex-col
-  px-4 sm:px-8 lg:px-16
-  py-3
-  max-w-screen-2xl
-  mx-auto
-  gap-3
-">
-
-          {/* ⭐ Desktop Layout */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 items-center w-full">
-
-            {/* Left → Logo */}
-            <div className="justify-self-start">
-              <Link href="/">
-                <img
-                  src="/logo v1 red.png"
-                  alt="Singitronic logo"
-                  className="w-28 sm:w-36 lg:w-56 h-auto"
-                />
-              </Link>
-            </div>
-
-            {/* Center → Search (Perfectly Centered) */}
-            <div className="hidden lg:block w-full max-w-xl mx-auto">
-              <SearchInput />
-            </div>
-
-            {/* Right → Icons */}
-            <div className="justify-self-end flex items-center gap-4 sm:gap-6 lg:gap-10">
-
-              <HeartElement wishQuantity={wishQuantity} />
-              <CartElement />
-
-              {/* Dropdown */}
-              <div className="dropdown dropdown-end">
-                <div
-                  tabIndex={0}
-                  role="button"
-                  className="w-10 mt-[2px] flex items-center justify-center cursor-pointer"
-                >
-                  <FaUser className="text-2xl text-black active:animate-pop" />
-                </div>
-
-                <ul
-                  tabIndex={0}
-                  className="dropdown-content z-[10] menu p-2 shadow bg-base-100 rounded-box w-52"
-                >
-                  {session ? (
-                    <>
-                      <li>
-                        <Link onClick={closeDropdown} href="/Yourorders">
-                          Your Orders
-                        </Link>
-                      </li>
-
-                      <li>
-                        <Link onClick={closeDropdown} href="/Userprofile">
-                          Profile
-                        </Link>
-                      </li>
-
-                      <li>
-                        <button onClick={handleLogout}>Logout</button>
-                      </li>
-                    </>
-                  ) : (
-                    <>
-                      <li>
-                        <Link onClick={closeDropdown} href="/login">
-                          Login
-                        </Link>
-                      </li>
-
-                      <li>
-                        <Link onClick={closeDropdown} href="/register">
-                          Register
-                        </Link>
-                      </li>
-                    </>
-                  )}
-                </ul>
+          /* Glassmorphism Effect */
+          bg-white/40 
+          backdrop-blur-lg 
+          border-b border-white/40
+          shadow-[0_4px_30px_rgba(0,0,0,0.03)]
+        ">
+          <div className="
+            flex flex-col
+            px-4 sm:px-8 lg:px-16
+            py-4
+            max-w-screen-2xl
+            mx-auto
+            gap-4
+          ">
+            {/* Desktop Layout */}
+            <div className="grid grid-cols-2 lg:grid-cols-3 items-center w-full">
+              {/* Left Logo */}
+              <div className="justify-self-start">
+                <Link href="/">
+                  <img
+                    src="/logo v1 red.png"
+                    alt="Singitronic logo"
+                    className="w-28 sm:w-36 lg:w-48 h-auto drop-shadow-sm hover:scale-105 transition-transform"
+                  />
+                </Link>
               </div>
 
+              {/* Center Search - Stylized Glass Container */}
+              <div className="hidden lg:block w-full max-w-xl mx-auto">
+                <div className="bg-white/50 backdrop-blur-md rounded-full border border-white/60 shadow-inner">
+                  <SearchInput />
+                </div>
+              </div>
+
+              {/* Right Icons */}
+              <div className="justify-self-end flex items-center gap-4 sm:gap-6 lg:gap-8">
+                <div className="p-2 rounded-full hover:bg-white/60 transition-colors">
+                  <HeartElement wishQuantity={wishQuantity} />
+                </div>
+                <div className="p-2 rounded-full hover:bg-white/60 transition-colors">
+                  <CartElement />
+                </div>
+
+                {/* User Dropdown */}
+                <div className="dropdown dropdown-end">
+                  <div
+                    tabIndex={0}
+                    role="button"
+                    className="w-10 h-10 flex items-center justify-center rounded-full bg-white/60 border border-white/80 shadow-sm hover:bg-white transition-all cursor-pointer"
+                  >
+                    <FaUser className="text-xl text-slate-700" />
+                  </div>
+
+                  <ul
+                    tabIndex={0}
+                    className="dropdown-content mt-4 z-[10] menu p-3 shadow-2xl bg-white/90 backdrop-blur-xl rounded-2xl w-52 border border-white/60"
+                  >
+                    {session ? (
+                      <>
+                        <li className="hover:bg-blue-50 rounded-lg transition-colors">
+                          <Link onClick={closeDropdown} href="/Yourorders">Your Orders</Link>
+                        </li>
+                        <li className="hover:bg-blue-50 rounded-lg transition-colors">
+                          <Link onClick={closeDropdown} href="/Userprofile">Profile</Link>
+                        </li>
+                        <div className="h-[1px] bg-slate-100 my-2" />
+                        <li className="hover:bg-red-50 text-red-600 rounded-lg transition-colors">
+                          <button onClick={handleLogout}>Logout</button>
+                        </li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="hover:bg-blue-50 rounded-lg transition-colors">
+                          <Link onClick={closeDropdown} href="/login">Login</Link>
+                        </li>
+                        <li className="hover:bg-blue-50 rounded-lg transition-colors">
+                          <Link onClick={closeDropdown} href="/register">Register</Link>
+                        </li>
+                      </>
+                    )}
+                  </ul>
+                </div>
+              </div>
             </div>
 
+            {/* Mobile Search Row */}
+            <div className="w-full lg:hidden bg-white/40 backdrop-blur-md rounded-xl border border-white/60">
+              <SearchInput />
+            </div>
           </div>
-
-          {/* ⭐ Mobile Search Row */}
-          <div className="w-full lg:hidden">
-            <SearchInput />
-          </div>
-
         </div>
-
-
       )}
 
-      {/* ================= ADMIN HEADER ================= */}
+      {/* Admin Header Logic simplified for brevity, following similar glass patterns */}
       {pathname.startsWith("/admin") && (
+        <div className="bg-white/60 backdrop-blur-md border-b border-white/40">
         <div
           className="
           flex
@@ -288,9 +285,8 @@ const Header = () => {
 
           </div>
         </div>
+        </div>
       )}
-
-    </header>
-  );
+    </header>  );
 }
 export default Header;

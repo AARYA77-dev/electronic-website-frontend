@@ -13,9 +13,9 @@ import ProductItem from "./ProductItem";
 
 const Products = async ({ slug }: any) => {
   // getting all data from URL slug and preparing everything for sending GET request
-  const inStockNum = slug?.searchParams?.inStock === "true" ? 1 : 0;
-  const outOfStockNum = slug?.searchParams?.outOfStock === "true" ? 1 : 0;
-  const page = slug?.searchParams?.page ? Number(slug?.searchParams?.page) : 1;
+  const inStockNum = await slug?.searchParams?.inStock === "true" ? 1 : 0;
+  const outOfStockNum = await slug?.searchParams?.outOfStock === "true" ? 1 : 0;
+  const page = await slug?.searchParams?.page ? Number(slug?.searchParams?.page) : 1;
 
   let stockMode: string = "lte";
   

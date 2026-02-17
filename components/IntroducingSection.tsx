@@ -1,75 +1,82 @@
-// *********************
-// Role of the component: IntroducingSection with the text "Introducing Singitronic"
-// Name of the component: IntroducingSection.tsx
-// Developer: Aleksandar Kuzmanovic
-// Version: 1.0
-// Component call: <IntroducingSection />
-// Input parameters: no input parameters
-// Output: Section with the text "Introducing Singitronic" and button
-// *********************
-
 import Link from "next/link";
-import React from "react";
 
 const IntroducingSection = () => {
   return (
-<div className="py-16 md:py-20 bg-gradient-to-l from-white to-primary">
+    <div className="relative py-20 bg-gradient-to-b from-[#dae2f8] to-[#d6a4a4] md:to-[#d6e0ff] overflow-hidden">
 
-  <div className="text-center flex flex-col gap-y-4 items-center px-4">
+      {/* Background Glow */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/40 blur-[120px] rounded-full opacity-60"></div>
 
-    {/* Heading */}
-    <h2 className="
-      text-white 
-      font-extrabold 
-      leading-tight
-      text-[clamp(2rem,6vw,5rem)]
-    ">
-      INTRODUCING{" "}
-      <span className="text-black">SINGI</span>
-      <span className="text-secondary">TRONIC</span>
-    </h2>
+      {/* Main Glass Container */}
+      <div className="relative max-w-6xl mx-auto px-6">
 
-    {/* Subtitle */}
-    <div className="space-y-2">
+        <div className="
+          rounded-[40px]
+          border border-white/40
+          bg-white/10
+          backdrop-blur-xl
+          p-10 md:p-16
+          shadow-xl
+        ">
 
-      <p className="text-white text-lg sm:text-xl md:text-2xl font-semibold">
-        Buy the latest electronics.
-      </p>
+          <div className="flex flex-col gap-6 text-left max-w-2xl">
 
-      <p className="text-white text-lg sm:text-xl md:text-2xl font-semibold">
-        The best electronics for tech lovers.
-      </p>
+            {/* Heading */}
+            <h2 className="
+              text-3xl 
+              sm:text-4xl 
+              md:text-5xl 
+              lg:text-6xl 
+              font-extrabold 
+              text-[#24325f]
+              tracking-wide
+            ">
+              INTRODUCING SINGITRONIC
+            </h2>
 
-      {/* Button */}
-      <Link
-        href="/shop"
-        className="
-          mt-4 
-          inline-block
-          bg-secondary 
-          border-2 
-          border-primary 
-          rounded-full
-          text-tertiary 
-          font-bold
-          px-8 
-          py-3
-          text-base 
-          sm:text-lg 
-          md:text-xl
-          hover:text-secondary 
-          hover:bg-tertiary
-          active:animate-pop
+            {/* Subtitle */}
+            <div className="space-y-3 text-[#33406b] text-lg md:text-xl font-medium">
+
+              <p>Buy the latest electronics.</p>
+              <p>The best electronics for tech lovers.</p>
+
+            </div>
+
+            {/* Button */}
+            <Link
+              href="/shop"
+              className="
+                mt-6
+                w-fit
+                bg-gradient-to-r from-[#3b5998] to-[#2563eb]
+                text-white
+                px-8
+                py-3
+                rounded-full
+                font-semibold
+          text-center 
+          uppercase 
+          text-xs 
+          sm:text-sm 
+          tracking-wider
+          shadow-md 
+          hover:shadow-lg
+          hover:opacity-90
+          transform active:scale-95
           transition-all
-        "
-      >
-        SHOP NOW
-      </Link>
+              "
+            >
+              SHOP NOW
+            </Link>
+
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Light Fade */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white/40 to-transparent"></div>
 
     </div>
-  </div>
-</div>
-
   );
 };
 
