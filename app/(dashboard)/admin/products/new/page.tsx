@@ -123,161 +123,165 @@ const AddNewProduct = () => {
   }, []);
 
   return (
-    <div className="bg-white flex justify-start max-w-screen-2xl mx-auto xl:h-full max-xl:flex-col max-xl:gap-y-5">
-      <DashboardSidebar />
-      <div className="flex flex-col gap-y-7 xl:ml-5 max-xl:px-5 w-full">
-        <h1 className="text-3xl font-semibold">Add new product</h1>
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Product name:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.title}
-              onChange={(e) =>
-                setProduct({ ...product, title: e.target.value })
-              }
-            />
-          </label>
-        </div>
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-screen-2xl mx-auto flex max-xl:flex-col h-screen overflow-hidden">
+        <DashboardSidebar />
 
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Product slug:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={convertSlugToURLFriendly(product?.slug)}
-              onChange={(e) =>
-                setProduct({
-                  ...product,
-                  slug: convertSlugToURLFriendly(e.target.value),
-                })
-              }
-            />
-          </label>
-        </div>
+        <div className="flex-1 flex flex-col p-6 xl:p-12 overflow-y-auto custom-scrollbar">
+          {/* Header */}
+          <div className="flex flex-col mb-10 px-4">
+            <h1 className="text-4xl font-black text-slate-900 tracking-tighter">
+              Add New Product
+            </h1>
+           
+          </div>
 
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Category:</span>
-            </div>
-            <select
-              className="select select-bordered"
-              value={product?.categoryId}
-              onChange={(e) =>
-                setProduct({ ...product, categoryId: e.target.value })
-              }
-            >
-              {categories &&
-                categories.map((category: any) => (
-                  <option key={category?.id} value={category?.id}>
-                    {category?.name}
-                  </option>
-                ))}
-            </select>
-          </label>
-        </div>
+          {/* Form Container */}
+          <div className="bg-white/40 backdrop-blur-xl border border-white/60 rounded-[40px] shadow-2xl p-8 xl:p-12">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+              
+              {/* Left Column: Primary Data */}
+              <div className="flex flex-col gap-y-8">
+                <section>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-6 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-blue-600"></span> Core Identification
+                  </h2>
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Product Title</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Quantum Processor X1"
+                        className="bg-white/50 border border-white shadow-sm rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-bold text-slate-800"
+                        value={product?.title}
+                        onChange={(e) => setProduct({ ...product, title: e.target.value })}
+                      />
+                    </div>
 
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Product price:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.price}
-              onChange={(e) =>
-                setProduct({ ...product, price: Number(e.target.value) })
-              }
-            />
-          </label>
-        </div>
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Manufacturer:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.manufacturer}
-              onChange={(e) =>
-                setProduct({ ...product, manufacturer: e.target.value })
-              }
-            />
-          </label>
-        </div>
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Quantity:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.quantity}
-              onChange={(e) =>
-                setProduct({ ...product, quantity: Number(e.target.value) })
-              }
-            />
-          </label>
-        </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">URL Slug</label>
+                      <input
+                        type="text"
+                        className="bg-slate-100/50 border border-slate-200/50 rounded-2xl px-6 py-4 outline-none font-mono text-xs text-blue-600"
+                        value={convertSlugToURLFriendly(product?.slug)}
+                        onChange={(e) => setProduct({ ...product, slug: convertSlugToURLFriendly(e.target.value) })}
+                      />
+                    </div>
+                  </div>
+                </section>
 
-        <div>
-          <input
-            type="file"
-            className="file-input file-input-bordered file-input-lg w-full max-w-sm"
-            onChange={(e: any) => {
-              uploadFile(e.target.files[0]);
-              setProduct({ ...product, mainImage: e.target.files[0].name });
-            }}
-          />
-          {product?.mainImage && (
-            <Image
-              src={`/` + product?.mainImage}
-              alt={product?.title}
-              className="w-auto h-auto"
-              width={100}
-              height={100}
-            />
-          )}
-        </div>
-        <div>
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">Product description:</span>
+                <section>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-6 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-blue-600"></span> Logistics & Classification
+                  </h2>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Category</label>
+                      <select
+                        className="bg-white/50 border border-white shadow-sm rounded-2xl px-6 py-4 outline-none font-bold text-slate-700"
+                        value={product?.categoryId}
+                        onChange={(e) => setProduct({ ...product, categoryId: e.target.value })}
+                      >
+                        {categories.map((category: any) => (
+                          <option key={category?.id} value={category?.id}>{category?.name}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Manufacturer</label>
+                      <input
+                        type="text"
+                        className="bg-white/50 border border-white shadow-sm rounded-2xl px-6 py-4 outline-none font-bold"
+                        value={product?.manufacturer}
+                        onChange={(e) => setProduct({ ...product, manufacturer: e.target.value })}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Price (INR)</label>
+                      <input
+                        type="number"
+                        className="bg-white/50 border border-white shadow-sm rounded-2xl px-6 py-4 outline-none font-black text-lg text-blue-900"
+                        value={product?.price}
+                        onChange={(e) => setProduct({ ...product, price: Number(e.target.value) })}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Initial Stock</label>
+                      <input
+                        type="number"
+                        className="bg-white/50 border border-white shadow-sm rounded-2xl px-6 py-4 outline-none font-bold"
+                        value={product?.quantity}
+                        onChange={(e) => setProduct({ ...product, quantity: Number(e.target.value) })}
+                      />
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              {/* Right Column: Visuals & Narrative */}
+              <div className="flex flex-col gap-y-8">
+                <section>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600 mb-6 flex items-center gap-2">
+                    <span className="w-4 h-[1px] bg-blue-600"></span> Visual Documentation
+                  </h2>
+                  <div className="relative group overflow-hidden bg-slate-100/50 border-2 border-dashed border-slate-300 rounded-[32px] p-8 flex flex-col items-center justify-center transition-all hover:border-blue-400">
+                    {product?.mainImage ? (
+                      <div className="relative w-full aspect-square max-h-[300px]">
+                        <Image
+                          fill
+                          src={`/` + product?.mainImage}
+                          alt="Preview"
+                          className="object-contain drop-shadow-2xl"
+                        />
+                      </div>
+                    ) : (
+                      <div className="py-12 flex flex-col items-center text-slate-400">
+                        <div className="text-4xl mb-4">+</div>
+                        <p className="text-[10px] font-black uppercase tracking-widest">Upload Master Image</p>
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={(e: any) => {
+                        uploadFile(e.target.files[0]);
+                        setProduct({ ...product, mainImage: e.target.files[0].name });
+                      }}
+                    />
+                  </div>
+                </section>
+
+                <section>
+                   <div className="flex flex-col gap-2">
+                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-2">Product Specifications</label>
+                      <textarea
+                        className="bg-white/50 border border-white shadow-sm rounded-[32px] px-8 py-6 outline-none h-[180px] focus:ring-2 focus:ring-blue-500/20 transition-all font-medium text-slate-700 leading-relaxed"
+                        placeholder="Detailed technical breakdown..."
+                        value={product?.description}
+                        onChange={(e) => setProduct({ ...product, description: e.target.value })}
+                      />
+                    </div>
+                </section>
+
+                {/* Submit Action */}
+                <button
+                  onClick={addProduct}
+                  disabled={loading}
+                  className="w-full mt-6 bg-blue-600 text-white rounded-[24px] py-6 font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-blue-600/20 hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                >
+                  {loading ? (
+                    <div className="flex items-center justify-center gap-3">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Processing...</span>
+                    </div>
+                  ) : (
+                    "Add product"
+                  )}
+                </button>
+              </div>
+
             </div>
-            <textarea
-              className="textarea textarea-bordered h-24"
-              value={product?.description}
-              onChange={(e) =>
-                setProduct({ ...product, description: e.target.value })
-              }
-            ></textarea>
-          </label>
-        </div>
-        <div className="flex gap-x-2">
-          <button
-            onClick={addProduct}
-            type="button"
-            className="w-[21%] uppercase rounded-[37px] bg-secondary px-10 py-5 text-lg border border-black border-gray-300 font-bold text-tertiary shadow-sm hover:bg-tertiary hover:text-secondary focus:outline-none focus:ring-2"
-          >
-            {loading ? <div
-              className="spinner"
-              role="status">
-            </div> :
-              <span>
-                Add product
-              </span>
-            }
-          </button>
+          </div>
         </div>
       </div>
     </div>

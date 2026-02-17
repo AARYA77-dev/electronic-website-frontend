@@ -1,8 +1,8 @@
 "use client";
-import { CustomButton, DashboardSidebar, SectionTitle } from "@/components";
+import { DashboardSidebar } from "@/components";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import {
   convertCategoryNameToURLFriendly as convertSlugToURLFriendly,
@@ -10,55 +10,36 @@ import {
 } from "../../../../../utils/categoryFormating";
 import { nanoid } from "nanoid";
 
-
 interface DashboardProductDetailsProps {
-  params: { id: number };
+  params: Promise<{ id: number }>; // 2. Update type to Promise
 }
 
-const DashboardProductDetails = ({
-  params: { id },
-}: DashboardProductDetailsProps) => {
-  const [product, setProduct] = useState<Product>();
+const DashboardProductDetails = (props: DashboardProductDetailsProps) => {
+const resolvedParams = use(props.params);
+  const id = resolvedParams.id;  const [product, setProduct] = useState<Product>();
   const [categories, setCategories] = useState<Category[]>();
   const [otherImages, setOtherImages] = useState<OtherImages[]>([]);
   const router = useRouter();
 
-  // functionality for deleting product
   const deleteProduct = async () => {
-    const requestOptions = {
-      method: "DELETE",
-    };
+    const requestOptions = { method: "DELETE" };
     fetch(`https://electronic-website-backend.onrender.com/api/products/${id}`, requestOptions)
       .then((response) => {
-        if (response.status !== 204) {
-          if (response.status === 400) {
-            toast.error(
-              "Cannot delete the product because of foreign key constraint"
-            );
-          } else {
-            throw Error("There was an error while deleting product");
-          }
-        } else {
+        if (response.status === 204) {
           toast.success("Product deleted successfully");
           router.push("/admin/products");
+        } else if (response.status === 400) {
+          toast.error("Cannot delete: Product is linked to existing orders.");
+        } else {
+          throw Error();
         }
       })
-      .catch((error) => {
-        toast.error("There was an error while deleting product");
-      });
+      .catch(() => toast.error("Error while deleting product"));
   };
 
-  // functionality for updating product
   const updateProduct = async () => {
-    if (
-      product?.title === "" ||
-      product?.slug === "" ||
-      product?.price.toString() === "" ||
-      product?.manufacturer === "" ||
-      product?.quantity.toString() === "" ||
-      product?.description === ""
-    ) {
-      toast.error("You need to enter values in input fields");
+    if (!product?.title || !product?.slug || !product?.price) {
+      toast.error("Required fields are missing");
       return;
     }
 
@@ -68,67 +49,38 @@ const DashboardProductDetails = ({
       body: JSON.stringify(product),
     };
     fetch(`https://electronic-website-backend.onrender.com/api/products/${id}`, requestOptions)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw Error("There was an error while updating product");
-        }
-      })
-      .then((data) => toast.success("Product successfully updated"))
-      .catch((error) => {
-        toast.error("There was an error while updating product");
-      });
+      .then((res) => (res.ok ? toast.success("Product updated") : toast.error("Update failed")))
+      .catch(() => toast.error("Network error during update"));
   };
 
-  // functionality for uploading main image file
   const uploadFile = async (file: any) => {
     const formData = new FormData();
     formData.append("uploadedFile", file);
-
     try {
-      const response = await fetch("https://electronic-website-backend.onrender.com/api/main-image", {
+      const res = await fetch("https://electronic-website-backend.onrender.com/api/main-image", {
         method: "POST",
         body: formData,
       });
-
-      if (response.ok) {
-        const data = await response.json();
-      } else {
-        toast.error("File upload unsuccessful.");
-      }
-    } catch (error) {
-      console.error("There was an error while during request sending:", error);
-      toast.error("There was an error during request sending");
+      if (!res.ok) toast.error("Upload unsuccessful");
+    } catch (err) {
+      toast.error("Upload error");
     }
   };
 
-  // fetching main product data including other product images
   const fetchProductData = async () => {
     fetch(`https://electronic-website-backend.onrender.com/api/products/${id}`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setProduct(data);
-      });
+      .then((res) => res.json())
+      .then((data) => setProduct(data));
 
-    const imagesData = await fetch(`https://electronic-website-backend.onrender.com/api/images/${id}`, {
-      cache: "no-store",
-    });
+    const imagesData = await fetch(`https://electronic-website-backend.onrender.com/api/images/${id}`, { cache: "no-store" });
     const images = await imagesData.json();
-    setOtherImages((currentImages) => images);
+    setOtherImages(images);
   };
 
-  // fetching all product categories. It will be used for displaying categories in select category input
   const fetchCategories = async () => {
     fetch(`https://electronic-website-backend.onrender.com/api/categories`)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      });
+      .then((res) => res.json())
+      .then((data) => setCategories(data));
   };
 
   useEffect(() => {
@@ -136,209 +88,128 @@ const DashboardProductDetails = ({
     fetchProductData();
   }, [id]);
 
+  const GlassInput = ({ label, value, onChange, type = "text", placeholder = "" }: any) => (
+    <div className="flex flex-col gap-2 w-full">
+      <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">{label}</span>
+      <input
+        type={type}
+        className="bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl px-5 py-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+        value={value || ""}
+        placeholder={placeholder}
+        onChange={onChange}
+      />
+    </div>
+  );
+
   return (
-    <div className="bg-white flex justify-start max-w-screen-2xl mx-auto xl:h-full max-xl:flex-col max-xl:gap-y-5">
-      <DashboardSidebar />
-      <div className="flex flex-col gap-y-7 xl:ml-5 w-full max-xl:px-5">
-        <h1 className="text-3xl font-semibold">Product details</h1>
-        {/* Product name input div - start */}
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Product name:</span>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50">
+      <div className="max-w-screen-2xl mx-auto flex max-xl:flex-col">
+        <DashboardSidebar />
+
+        <div className="flex-1 p-6 xl:p-12">
+          {/* Header */}
+          <header className="mb-10">
+            <h1 className="text-4xl font-black text-slate-900 tracking-tighter">Edit Product</h1>
+            <p className="text-slate-500 font-medium">Configure product parameters and visual assets.</p>
+          </header>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Primary Details */}
+            <div className="lg:col-span-2 space-y-8">
+              <section className="bg-white/30 backdrop-blur-xl border border-white/60 rounded-[32px] p-8 shadow-xl">
+                <h2 className="text-sm font-black uppercase tracking-[0.3em] text-blue-900 mb-6 flex items-center gap-2">
+                  <span className="w-4 h-[2px] bg-blue-900" /> General Info
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <GlassInput label="Product Name" value={product?.title} onChange={(e: any) => setProduct({ ...product!, title: e.target.value })} />
+                  <GlassInput label="Slug ID" value={product?.slug} onChange={(e: any) => setProduct({ ...product!, slug: convertSlugToURLFriendly(e.target.value) })} />
+                  <div className="md:col-span-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Description</span>
+                    <textarea
+                      className="w-full mt-2 bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl p-5 text-slate-900 h-32 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+                      value={product?.description}
+                      onChange={(e) => setProduct({ ...product!, description: e.target.value })}
+                    />
+                  </div>
+                </div>
+              </section>
+
+              <section className="bg-white/30 backdrop-blur-xl border border-white/60 rounded-[32px] p-8 shadow-xl">
+                <h2 className="text-sm font-black uppercase tracking-[0.3em] text-blue-900 mb-6 flex items-center gap-2">
+                  <span className="w-4 h-[2px] bg-blue-900" /> Logistics
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <GlassInput label="Price (INR)" type="number" value={product?.price} onChange={(e: any) => setProduct({ ...product!, price: Number(e.target.value) })} />
+                  <GlassInput label="Quantity" type="number" value={product?.quantity} onChange={(e: any) => setProduct({ ...product!, quantity: Number(e.target.value) })} />
+                  <div className="flex flex-col gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">Category</span>
+                    <select
+                      className="bg-white/40 backdrop-blur-md border border-white/60 rounded-2xl px-5 py-3 text-slate-900 focus:outline-none transition-all"
+                      value={product?.categoryId}
+                      onChange={(e) => setProduct({ ...product!, categoryId: e.target.value })}
+                    >
+                      {categories?.map((c) => (
+                        <option key={c.id} value={c.id}>{formatCategoryName(c.name)}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </section>
             </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.title}
-              onChange={(e) =>
-                setProduct({ ...product!, title: e.target.value })
-              }
-            />
-          </label>
-        </div>
-        {/* Product name input div - end */}
-        {/* Product price input div - start */}
 
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Product price:</span>
+            {/* Visual Assets Side-panel */}
+            <div className="space-y-8">
+              <section className="bg-[#1e3a8a] text-white rounded-[32px] p-8 shadow-2xl border border-white/10">
+                <h2 className="text-sm font-black uppercase tracking-[0.3em] text-blue-300 mb-6">Visual Core</h2>
+                <div className="relative group rounded-2xl overflow-hidden bg-white/10 border border-white/20 aspect-square mb-6">
+                  {product?.mainImage && (
+                    <Image src={`/` + product?.mainImage} alt="Main" fill className="object-contain p-4" />
+                  )}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity cursor-pointer">
+                    <input
+                      type="file"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          uploadFile(file);
+                          setProduct({ ...product!, mainImage: file.name });
+                        }
+                      }}
+                    />
+                    <span className="text-xs font-black uppercase tracking-widest">Swap Image</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {otherImages.map((img) => (
+                    <div key={nanoid()} className="relative aspect-square rounded-lg border border-white/10 overflow-hidden opacity-50">
+                      <Image src={`/${img.image}`} alt="Gallery" fill className="object-cover" />
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Action Hub */}
+              <section className="flex flex-col gap-4">
+                <button
+                  onClick={updateProduct}
+                  className="w-full py-5 bg-[#1e3a8a] text-white rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] transition-all"
+                >
+                  Apply Changes
+                </button>
+                <button
+                  onClick={deleteProduct}
+                  className="w-full py-5 bg-red-500/10 text-red-500 border border-red-500/20 rounded-2xl font-black uppercase tracking-[0.2em] hover:bg-red-500 hover:text-white transition-all"
+                >
+                  Delete Product
+                </button>
+                <p className="text-[10px] text-slate-400 font-bold uppercase text-center mt-2 leading-relaxed">
+                  Warning: Purging requires 0 linked records in the Order-Product matrix.
+                </p>
+              </section>
             </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.price}
-              onChange={(e) =>
-                setProduct({ ...product!, price: Number(e.target.value) })
-              }
-            />
-          </label>
+          </div>
         </div>
-        {/* Product price input div - end */}
-        {/* Product manufacturer input div - start */}
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Manufacturer:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.manufacturer}
-              onChange={(e) =>
-                setProduct({ ...product!, manufacturer: e.target.value })
-              }
-            />
-          </label>
-        </div>
-
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Quantity:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.quantity}
-              onChange={(e) =>
-                setProduct({ ...product!, quantity: Number(e.target.value) })
-              }
-            />
-          </label>
-        </div>
-        {/* Product manufacturer input div - end */}
-        {/* Product slug input div - start */}
-
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Slug:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={product?.slug && convertSlugToURLFriendly(product?.slug)}
-              onChange={(e) =>
-                setProduct({
-                  ...product!,
-                  slug: convertSlugToURLFriendly(e.target.value),
-                })
-              }
-            />
-          </label>
-        </div>
-        {/* Product slug input div - end */}
-        {/* Product inStock select input div - start */}
-
-        {/* Product inStock select input div - end */}
-        {/* Product category select input div - start */}
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Category:</span>
-            </div>
-            <select
-              className="select select-bordered"
-              value={product?.categoryId}
-              onChange={(e) =>
-                setProduct({
-                  ...product!,
-                  categoryId: e.target.value,
-                })
-              }
-            >
-              {categories &&
-                categories.map((category: Category) => (
-                  <option key={category?.id} value={category?.id}>
-                    {formatCategoryName(category?.name)}
-                  </option>
-                ))}
-            </select>
-          </label>
-        </div>
-        {/* Product category select input div - end */}
-
-        {/* Main image file upload div - start */}
-        <div>
-          <input
-            type="file"
-            className="file-input file-input-bordered file-input-lg w-full max-w-sm"
-            onChange={(e) => {
-              const files = e.target.files;
-              if (files && files.length > 0) {
-                const selectedFile = files[0];
-                uploadFile(selectedFile);
-                setProduct({ ...product!, mainImage: selectedFile.name });
-              }
-            }}
-
-          />
-          {product?.mainImage && (
-            <Image
-              src={`/` + product?.mainImage}
-              alt={product?.title}
-              className="w-auto h-auto mt-2"
-              width={100}
-              height={100}
-            />
-          )}
-        </div>
-        {/* Main image file upload div - end */}
-        {/* Other images file upload div - start */}
-        <div className="flex gap-x-1">
-          {otherImages &&
-            otherImages.map((image) => (
-              <Image
-                src={`/${image.image}`}
-                key={nanoid()}
-                alt="product image"
-                width={100}
-                height={100}
-                className="w-auto h-auto"
-              />
-            ))}
-        </div>
-        {/* Other images file upload div - end */}
-        {/* Product description div - start */}
-        <div>
-          <label className="form-control">
-            <div className="label">
-              <span className="label-text">Product description:</span>
-            </div>
-            <textarea
-              className="textarea textarea-bordered h-24"
-              value={product?.description}
-              onChange={(e) =>
-                setProduct({ ...product!, description: e.target.value })
-              }
-            ></textarea>
-          </label>
-        </div>
-
-
-        <div className="flex gap-x-2 max-sm:flex-col">
-          <button
-            type="button"
-            onClick={updateProduct}
-            className="uppercase rounded-[37px] bg-secondary px-10 py-5 text-lg border border-black border-gray-300 font-bold text-tertiary shadow-sm hover:bg-tertiary hover:text-secondary focus:outline-none focus:ring-2"
-          >
-            Update product
-          </button>
-          <button
-            type="button"
-            className="uppercase rounded-[37px] bg-secondary px-10 py-5 text-lg border border-black border-gray-300 font-bold text-tertiary shadow-sm hover:bg-tertiary hover:text-secondary focus:outline-none focus:ring-2"
-            onClick={deleteProduct}
-          >
-            Delete product
-          </button>
-        </div>
-        {/* Action buttons div - end */}
-        <p className="text-xl max-sm:text-lg text-primary">
-          To delete the product you first need to delete all its records in
-          orders (customer_order_product table).
-        </p>
       </div>
     </div>
   );

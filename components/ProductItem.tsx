@@ -75,7 +75,7 @@ const ProductItem = ({
         </p>
 
         {/* Rating - Hidden to match image, remove 'hidden' class to show */}
-        <div className="hidden">
+        <div className="">
            <ProductItemRating productRating={product.rating} />
         </div>
       </div>
@@ -88,8 +88,7 @@ const ProductItem = ({
           text-center 
           rounded-full
           text-white 
-          uppercase 
-          /* Blue Gradient Button */
+          uppercase
           bg-gradient-to-r from-[#3b5998] to-[#2563eb]
           py-3
           px-4

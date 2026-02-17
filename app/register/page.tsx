@@ -128,256 +128,171 @@ const RegisterPage = () => {
 
 
   return (
-    <div className="bg-white">
+    <div className="min-h-screen relative overflow-x-hidden flex flex-col">
+      {/* Background Orbs */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] -z-10" />
+
       <SectionTitle title="Register" path="Home | Register" />
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-white">
-        <div className="flex justify-center flex-col items-center">
-          <h2 className="mt-6 text-center text-2xl leading-9 tracking-tight text-gray-900">
-            Sign up on our website
+
+      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="sm:mx-auto sm:w-full sm:max-w-2xl text-center mb-10">
+          <h2 className="text-4xl font-black  text-black uppercase">
+            Create  Account
           </h2>
+          <p className="mt-2 text-[10px] font-bold tracking-[0.4em] text-slate-500 uppercase">
+            Registration
+          </p>
         </div>
 
-        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-            <form className="space-y-6" onSubmit={handleSubmit} >
-              <div>
-                <label
-                  htmlFor="firstname"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  First Name
-                </label>
-                <div className="mt-2">
+        <div className="sm:mx-auto sm:w-full sm:max-w-3xl">
+          {/* Main Glass Container */}
+          <div className="bg-white/5 backdrop-blur-3xl border border-white/10 px-8 py-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] rounded-[48px] sm:px-16">
+            <form className="space-y-8" onSubmit={handleSubmit}>
+
+              {/* Personal Info Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">First Name</label>
                   <input
-                    id="firstname"
+                    type="text"
                     name="firstname"
-
-                    type="text"
+                    placeholder="John"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="lastname"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Last Name
-                </label>
-                <div className="mt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Last Name</label>
                   <input
-                    id="lastname"
+                    type="text"
                     name="lastname"
-                    type="text"
+                    placeholder="Doe"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+              {/* Email - Full Width */}
+              <div className="space-y-1">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Electronic Mail</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="name@domain.com"
+                  className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                  required
+                />
               </div>
 
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-                <div className="mt-2 relative">
+              {/* Passwords Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1 relative">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Password</label>
                   <input
-                    id="password"
-                    name="password"
                     type={showPassword ? "text" : "password"}
-                    autoComplete="current-password"
+                    name="password"
+                    placeholder="Min 8 chars"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                   <button
                     type="button"
                     onClick={togglePassword}
-                    className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
-                    tabIndex={-1}
+                    className="absolute right-4 top-10 text-slate-500 hover:text-blue-400"
                   >
-                    {showPassword ? (
-                      <FaEyeSlash className="h-5 w-5" />
-                    ) : (
-                      <FaEye className="h-5 w-5" />
-                    )}
+                    {showPassword ? <FaEyeSlash size={18} /> : <FaEye size={18} />}
                   </button>
                 </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="confirmpassword"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm password
-                </label>
-                <div className="mt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Confirm Password</label>
                   <input
-                    id="confirmpassword"
-                    name="confirmpassword"
                     type="password"
-                    autoComplete="current-password"
-
+                    name="confirmpassword"
+                    placeholder="Repeat key"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
-              <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Address
-                </label>
-                <div className="mt-2">
+
+              {/* Logistics Section Header */}
+              <div className="pt-4 flex items-center gap-4">
+                <span className="text-[9px] font-black uppercase tracking-[0.3em] text-blue-500 whitespace-nowrap">Location</span>
+                <div className="h-[1px] w-full bg-white/10" />
+              </div>
+
+              {/* Address Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2 space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Street Address</label>
                   <input
-                    id="address"
+                    type="text"
                     name="address"
-                    type="address"
-                    autoComplete="address"
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Phone
-                </label>
-                <div className="mt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Contact No.</label>
                   <input
-                    id="phone"
+                    type="tel"
                     name="phone"
-                    type="phone"
-                    autoComplete="phone"
+                    placeholder="+1..."
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
                     required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
-              <div>
-                <label
-                  htmlFor="apartment"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Apartment, suite, etc.
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="apartment"
-                    name="apartment"
-                    type="apartment"
 
-                    autoComplete="apartment"
-                    required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="city"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  City
-                </label>
-                <div className="mt-2">
+              {/* City/Country Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">City</label>
                   <input
-                    id="city"
+                    type="text"
                     name="city"
-
-                    autoComplete="city"
-                    required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Country
-                </label>
-                <div className="mt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Country</label>
                   <input
-                    id="country"
+                    type="text"
                     name="country"
-
-                    autoComplete="country"
-                    required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="postalCode"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Postal code
-                </label>
-                <div className="mt-2">
+                <div className="space-y-1">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">Postal Code</label>
                   <input
-                    id="postalCode"
+                    type="text"
                     name="postalCode"
-
-                    autoComplete="postalCode"
-                    required
-
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>
-              <div>
 
-                <CustomButton
-                  buttonType="submit"
-                  text="Sign up"
-                  paddingX={3}
-                  paddingY={1.5}
-                  customWidth="full"
-                  textSize="sm"
-                />
-
-                <p className="text-red-600 text-center text-[16px] my-4">
-                  {error && error}
-                </p>
+              <div className="pt-6">
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-blue-600/20 transition-all active:scale-[0.98]"
+                >
+                  Sign up
+                </button>
               </div>
+
+              {error && (
+                <p className="text-red-500 text-center text-[10px] font-black uppercase tracking-widest animate-pulse">
+                  {error}
+                </p>
+              )}
             </form>
           </div>
+
+          <p className="text-center mt-10 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+            Already have an active node? <a href="/login" className="text-blue-500 hover:text-blue-400 transition-colors">Authorize Access</a>
+          </p>
         </div>
       </div>
     </div>

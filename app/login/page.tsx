@@ -5,21 +5,18 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
+import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 
 const LoginPage = () => {
   const router = useRouter();
   const [error, setError] = useState("");
-  // const session = useSession();
   const { data: session, status: sessionStatus } = useSession();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => setShowPassword(prev => !prev);
 
   useEffect(() => {
-    // if user has already logged in redirect to home page
     if (sessionStatus === "authenticated") {
       router.replace("/");
     }
@@ -27,18 +24,16 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const email = e.target[0].value;
-    const password = e.target[1].value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
 
     if (!isValidEmailAddressFormat(email)) {
-      setError("Email is invalid");
-      toast.error("Email is invalid");
+      toast.error("Format Error: Invalid Email");
       return;
     }
 
     if (!password || password.length < 8) {
-      setError("Password is invalid");
-      toast.error("Password is invalid");
+      toast.error("Security Error: Weak Credentials");
       return;
     }
 
@@ -49,118 +44,89 @@ const LoginPage = () => {
     });
 
     if (res?.error) {
-      setError("Invalid email or password");
-      toast.error("Invalid email or password");
-      if (res?.url) router.replace("/");
+      setError("Invalid Authentication Credentials");
+      toast.error("Access Denied");
     } else {
-      setError("");
-      toast.success("Successful login");
+      toast.success("Identity Verified");
     }
   };
 
- 
   return (
-    <div className="bg-white">
-      <SectionTitle title="Login" path="Home | Login" />
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-white">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <h2 className="mt-6 text-center text-2xl font-normal leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
+    <div className="min-h-screen  relative overflow-hidden flex flex-col">
+      {/* Dynamic Background Elements */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10">
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px]" />
+      </div>
 
-        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+      <SectionTitle title="Login" path="Home | Login" />
+
+      <div className="flex-1 flex flex-col justify-center py-12 px-6 lg:px-8 relative z-10">
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+          {/* Main Glass Card */}
+          <div className="bg-white/5 backdrop-blur-3xl border border-white/10 px-8 py-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] rounded-[40px] sm:px-12">
             <form className="space-y-6" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
+              <div className="space-y-1">
+                <label htmlFor="email" className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">
+                  Email
                 </label>
-                <div className="mt-2">
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@mail.com"
+                  className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label htmlFor="password" className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">
+                  Password
+                </label>
+                <div className="relative">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
                   />
+                  <button
+                    type="button"
+                    onClick={togglePassword}
+                    className="absolute inset-y-0 right-4 flex items-center text-slate-500 hover:text-blue-400 transition-colors"
+                  >
+                    {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                  </button>
                 </div>
               </div>
 
-               <div>
-      <label
-        htmlFor="password"
-        className="block text-sm font-medium leading-6 text-gray-900"
-      >
-        Password
-      </label>
-      <div className="mt-2 relative">
-        <input
-          id="password"
-          name="password"
-          type={showPassword ? "text" : "password"}
-          autoComplete="current-password"
-          required
-          className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-        />
-        <button
-          type="button"
-          onClick={togglePassword}
-          className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
-          tabIndex={-1}
-        >
-          {showPassword ? (
-            <FaEyeSlash className="h-5 w-5" />
-          ) : (
-            <FaEye className="h-5 w-5" />
-          )}
-        </button>
-      </div>
-    </div>
-
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between px-2">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
-                    name="remember-me"
                     type="checkbox"
-                    className="h-4 w-4 rounded border-gray-300 text-black focus:ring-black"
+                    className="h-4 w-4 rounded border-white/10 bg-white/5 text-blue-600 focus:ring-blue-500/20"
                   />
-                  <label
-                    htmlFor="remember-me"
-                    className="ml-3 block text-sm leading-6 text-gray-900"
-                  >
-                    Remember me
+                  <label htmlFor="remember-me" className="ml-3 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                    Keep Active
                   </label>
                 </div>
-
-                <div className="text-sm leading-6">
-                  <a
-                    href="#"
-                    className="font-semibold text-black hover:text-black"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
+                <a href="#" className="text-[10px] font-bold uppercase tracking-widest text-blue-500 hover:text-blue-400 transition-colors">
+                  Reset Key?
+                </a>
               </div>
 
-              <div>
-                <CustomButton
-                  buttonType="submit"
-                  text="Sign in"
-                  paddingX={3}
-                  paddingY={1.5}
-                  customWidth="full"
-                  textSize="sm"
-                />
-              </div>
+              <button
+                type="submit"
+                className="w-full bg-blue-600 hover:bg-blue-500 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-blue-600/20 transition-all active:scale-[0.98]"
+              >
+                Login
+              </button>
             </form>
 
-            <div>
+            {/* Divider */}
+              <div>
               <div className="relative mt-10">
                 <div
                   className="absolute inset-0 flex items-center"
@@ -215,6 +181,12 @@ const LoginPage = () => {
                 {error && error}
               </p>
             </div>
+
+            {error && (
+              <p className="mt-6 text-center text-[10px] font-black uppercase tracking-widest text-red-500 animate-bounce">
+                {error}
+              </p>
+            )}
           </div>
         </div>
       </div>

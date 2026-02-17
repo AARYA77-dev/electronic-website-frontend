@@ -37,12 +37,35 @@ const BuyNowSingleProductBtn = ({
   };
   return (
     <button
-    disabled={product.quantity===0}
-      onClick={handleAddToBuyNow}
-      className="btn w-[200px] text-lg border border-secondary hover:border-secondary border-1 font-normal bg-secondary text-white hover:bg-tertiary hover:scale-110 hover:text-secondary transition-all uppercase ease-in max-[500px]:w-full"
-    >
-      Buy Now
-    </button>
+  disabled={product.quantity === 0}
+  onClick={handleAddToBuyNow}
+  className="
+    group relative overflow-hidden
+    w-[240px] h-[60px] 
+    text-sm font-black uppercase tracking-[0.2em] 
+    bg-[#1e3a8a] 
+    text-white
+    rounded-2xl 
+    shadow-[0_20px_40px_rgba(30,58,138,0.3)]
+    border border-white/20
+    transition-all duration-300 ease-out
+    hover:scale-105 hover:shadow-[0_25px_50px_rgba(30,58,138,0.4)]
+    active:scale-95
+    disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed
+    max-[500px]:w-full
+  "
+>
+  {/* Inner Glow Effect */}
+  <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  
+  {/* Modern "Glass Reflection" Overlay */}
+  <div className="absolute top-0 left-0 w-full h-[50%] bg-white/10 -skew-y-12 origin-top-left transition-transform group-hover:translate-y-1" />
+
+  <span className="relative z-10 flex items-center justify-center gap-2">
+    {product.quantity === 0 ? "Out of Stock" : "Buy Now"}
+    <span className="text-xl animate-pulse group-hover:translate-x-1 transition-transform">→</span>
+  </span>
+</button>
   );
 };
 

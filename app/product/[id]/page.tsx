@@ -39,101 +39,137 @@ const SingleProductPage = async ({ params }: SingleProductPageProps) => {
   }
 
   return (
-    <div className="bg-white">
-      <div className="max-w-screen-2xl mx-auto">
-        <div className="flex justify-center gap-x-16 pt-10 max-lg:flex-col items-center gap-y-5 px-5">
-          <div>
+  <div className="relative min-h-screen 
+   bg-gradient-to-b from-[#dae2f8] to-[#d6e0ff]
+    py-20
+    overflow-hidden
+  ">
+
+    {/* Background Glow */}
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 
+      w-[700px] h-[700px] bg-white/40 blur-[140px] 
+      rounded-full opacity-60" />
+
+    <div className="relative max-w-7xl mx-auto px-6">
+
+      {/* Main Glass Container */}
+      <div className="
+        rounded-[40px]
+        border border-white/40
+        bg-white/15
+        backdrop-blur-xl
+        p-10
+        shadow-2xl
+      ">
+
+        <div className="flex gap-16 max-lg:flex-col items-start">
+
+          {/* LEFT SIDE - IMAGES */}
+          <div className="flex flex-col items-center w-full lg:w-1/2">
+
             <Image
-              src={product?.mainImage ? `/${product?.mainImage}` : "/product_placeholder.jpg"}
+              src={
+                product?.mainImage
+                  ? `/${product?.mainImage}`
+                  : "/product_placeholder.jpg"
+              }
               width={500}
               height={500}
               alt="main image"
-              className="w-auto h-auto"
+              className="object-contain max-h-[400px]"
             />
-            <div className="flex justify-around mt-5 flex-wrap gap-y-1 max-[500px]:justify-center max-[500px]:gap-x-1">
+
+            {/* Thumbnail Images */}
+            <div className="flex gap-4 mt-6 flex-wrap justify-center">
               {images?.map((imageItem: ImageItem) => (
-                <Image
+                <div
                   key={imageItem.imageID}
-                  src={`/${imageItem.image}`}
-                  width={100}
-                  height={100}
-                  alt="laptop image"
-                  className="w-auto h-auto"
-                />
+                  className="p-2 rounded-xl bg-white/20 border border-white/30 backdrop-blur-md hover:scale-105 transition"
+                >
+                  <Image
+                    src={`/${imageItem.image}`}
+                    width={80}
+                    height={80}
+                    alt="product image"
+                    className="object-contain"
+                  />
+                </div>
               ))}
             </div>
+
           </div>
-          <div className="flex flex-col gap-y-7 text-black max-[500px]:text-center">
+
+          {/* RIGHT SIDE - DETAILS */}
+          <div className="flex flex-col gap-6 w-full lg:w-1/2 text-[#24325f]">
+
             <SingleProductRating rating={product?.rating} />
-            <h1 className="text-3xl">{product?.title}</h1>
-            {/* <p className="text-xl font-semibold">${product?.price}</p> */}
-            <StockAvailabillity stock={94} inStock={product?.inStock} quantity={product?.quantity} />
+
+            <h1 className="text-3xl md:text-4xl font-bold">
+              {product?.title}
+            </h1>
+
+            <p className="text-2xl font-extrabold text-[#2f4fa5]">
+              ₹{product?.price}
+            </p>
+
+            <StockAvailabillity
+              stock={94}
+              inStock={product?.inStock}
+              quantity={product?.quantity}
+            />
+
             <SingleProductDynamicFields product={product} />
-            <div className="flex flex-col gap-y-2 max-[500px]:items-center">
-              <AddToWishlistBtn product={product} slug={params.productSlug} />
-              <p className="text-lg">
-               <span className="ml-1">abccd-18</span>
-              </p>
-              <div className="text-lg flex gap-x-2">
-                <span>Share:</span>
-                <div className="flex items-center gap-x-1 text-2xl">
-                  <FaSquareFacebook />
-                  <FaSquareXTwitter />
-                  <FaSquarePinterest />
-                </div>
-              </div>
-              <div className="flex gap-x-2">
-                <Image
-                  src="/visa.svg"
-                  width={50}
-                  height={50}
-                  alt="visa icon"
-                  className="w-auto h-auto"
-                />
-                <Image
-                  src="/mastercard.svg"
-                  width={50}
-                  height={50}
-                  alt="mastercard icon"
-                  className="h-auto w-auto"
-                />
-                <Image
-                  src="/ae.svg"
-                  width={50}
-                  height={50}
-                  alt="americal express icon"
-                  className="h-auto w-auto"
-                />
-                <Image
-                  src="/paypal.svg"
-                  width={50}
-                  height={50}
-                  alt="paypal icon"
-                  className="w-auto h-auto"
-                />
-                <Image
-                  src="/dinersclub.svg"
-                  width={50}
-                  height={50}
-                  alt="diners club icon"
-                  className="h-auto w-auto"
-                />
-                <Image
-                  src="/discover.svg"
-                  width={50}
-                  height={50}
-                  alt="discover icon"
-                  className="h-auto w-auto"
-                />
+
+            {/* Wishlist */}
+            <AddToWishlistBtn
+              product={product}
+              slug={params.productSlug}
+            />
+
+            {/* SKU */}
+            <p className="text-sm opacity-70">
+              SKU: <span className="font-semibold">abccd-18</span>
+            </p>
+
+            {/* Share */}
+            <div className="flex items-center gap-3">
+              <span className="font-medium">Share:</span>
+              <div className="flex gap-2 text-2xl">
+                <FaSquareFacebook className="hover:scale-110 transition" />
+                <FaSquareXTwitter className="hover:scale-110 transition" />
+                <FaSquarePinterest className="hover:scale-110 transition" />
               </div>
             </div>
+
+            {/* Payment Icons */}
+            <div className="flex gap-3 mt-4 flex-wrap">
+              {["visa","mastercard","ae","paypal","dinersclub","discover"].map((icon) => (
+                <div
+                  key={icon}
+                  className="p-2 rounded-lg bg-white/20 border border-white/30 backdrop-blur-md"
+                >
+                  <Image
+                    src={`/${icon}.svg`}
+                    width={40}
+                    height={40}
+                    alt={icon}
+                  />
+                </div>
+              ))}
+            </div>
+
           </div>
-        </div>
-        <div className="py-16">
-          <ProductTabs product={product} />
+
         </div>
       </div>
+
+      {/* Tabs Section */}
+      <div className="mt-20">
+        <ProductTabs product={product} />
+      </div>
+
     </div>
+  </div>
   );
 };
 

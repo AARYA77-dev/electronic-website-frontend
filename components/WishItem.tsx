@@ -46,16 +46,16 @@ const WishItem = ({
   };
 
   const deleteItemFromWishlist = async (productId: string) => {
-    
+
     if (userId) {
 
-      fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${userId}/${productId}`, {method: "DELETE"}).then(
+      fetch(`https://electronic-website-backend.onrender.com/api/wishlist/${userId}/${productId}`, { method: "DELETE" }).then(
         (response) => {
           removeFromWishlist(productId);
           toast.success("Item removed from your wishlist");
         }
       );
-    }else{
+    } else {
       toast.error("You need to be logged in to perform this action");
     }
   };
@@ -66,14 +66,8 @@ const WishItem = ({
 
   return (
     <tr className="hover:bg-gray-100 cursor-pointer">
-      <th
-        className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
-      >
-        {id}
-      </th>
       <th>
-        <div className="w-12 h-12 mx-auto" onClick={() => openProduct(slug)}>
+        <div className="w-12 h-12 mx-auto" onClick={() => openProduct(id)}>
           <Image
             src={`/${image}`}
             width={200}
@@ -85,13 +79,13 @@ const WishItem = ({
       </th>
       <td
         className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
+        onClick={() => openProduct(id)}
       >
         {title}
       </td>
       <td
         className="text-black text-sm text-center"
-        onClick={() => openProduct(slug)}
+        onClick={() => openProduct(id)}
       >
         {stockAvailabillity ? (
           <span className="text-success">In stock</span>
@@ -100,7 +94,12 @@ const WishItem = ({
         )}
       </td>
       <td>
-        <button className="btn btn-xs bg-primary text-white hover:text-primary border border-primary hover:bg-white hover:text-primary text-sm">
+        <button className="flex mx-auto items-center gap-2 px-4 py-2 
+        bg-white/10 text-slate-400 
+        border border-slate-200/50 
+        rounded-xl text-xs font-bold uppercase tracking-wider
+        hover:bg-rose-50 hover:text-rose-600 hover:border-rose-200
+        transition-all duration-300">
           <FaHeartCrack />
           <span
             className="max-sm:hidden"

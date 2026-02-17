@@ -114,25 +114,43 @@ const AddToWishlistBtn = ({ product, slug }: AddToWishlistBtnProps) => {
   }, [session?.user?.email, wishlist]);
 
   return (
-    <>
-      {isProductInWishlist ? (
-        <p
-          className="flex items-center gap-x-2 cursor-pointer"
-          onClick={removeFromWishlistFun}
-        >
-          <FaHeartCrack className="text-xl text-custom-black" />
-          <span className="text-lg">REMOVE FROM WISHLIST</span>
-        </p>
-      ) : (
-        <p
-          className="flex items-center gap-x-2 cursor-pointer"
-          onClick={addToWishlistFun}
-        >
-          <FaHeart className="text-xl text-custom-black" />
-          <span className="text-lg">ADD TO WISHLIST</span>
-        </p>
-      )}
-    </>
+   <div className="flex items-center">
+  {isProductInWishlist ? (
+    <button
+      onClick={removeFromWishlistFun}
+      className="
+        group flex items-center gap-x-3 px-6 py-3
+        bg-red-500/10 backdrop-blur-md 
+        border border-red-200/40 
+        rounded-2xl shadow-sm
+        transition-all duration-300 hover:bg-red-500/20 active:scale-95
+      "
+    >
+      <FaHeartCrack className="text-xl text-red-600 transition-transform group-hover:scale-110" />
+      <span className="text-xs font-black uppercase tracking-[0.15em] text-red-700">
+        Saved to Wishlist
+      </span>
+    </button>
+  ) : (
+    <button
+      onClick={addToWishlistFun}
+      className="
+        group flex items-center gap-x-3 px-6 py-3
+        bg-white/20 backdrop-blur-md 
+        border border-white/40 
+        rounded-2xl shadow-sm
+        transition-all duration-300 
+        hover:bg-white/40 hover:border-white/60 hover:shadow-md
+        active:scale-95
+      "
+    >
+      <FaHeart className="text-xl text-slate-400 group-hover:text-red-400 transition-colors duration-300" />
+      <span className="text-xs font-black uppercase tracking-[0.15em] text-slate-600 group-hover:text-slate-900">
+        Add to Wishlist
+      </span>
+    </button>
+  )}
+</div>
   );
 };
 

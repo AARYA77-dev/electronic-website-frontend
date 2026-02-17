@@ -85,11 +85,30 @@ const AddToCartSingleProductBtn = ({ product, quantityCount }: SingleProductBtnP
   // };
   return (
     <button
-      onClick={handleAddToCart}
-      className="btn w-[200px] text-lg border border-tertiary border-1 font-normal bg-tertiary text-secondary hover:bg-secondary hover:text-tertiary hover:border-secondary hover:scale-110 transition-all uppercase ease-in max-[500px]:w-full"
-    >
-      Add to cart
-    </button>
+  onClick={handleAddToCart}
+  className="
+    group relative overflow-hidden
+    w-[240px] h-[60px] 
+    text-sm font-black uppercase tracking-[0.2em] 
+    bg-white/10 backdrop-blur-md
+    border border-white/40
+    text-[#1e3a8a] 
+    rounded-2xl 
+    shadow-[0_8px_32px_0_rgba(31,38,135,0.15)]
+    transition-all duration-300 ease-out
+    hover:scale-105 hover:bg-white/20 hover:border-white/60 hover:text-blue-700
+    active:scale-95
+    max-[500px]:w-full
+  "
+>
+  {/* Shimmer Effect Layer */}
+  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+  
+  <span className="relative z-10 flex items-center justify-center gap-2">
+    Add to cart
+    <span className="text-xl group-hover:translate-x-1 transition-transform">+</span>
+  </span>
+</button>
   );
 };
 

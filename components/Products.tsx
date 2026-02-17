@@ -7,15 +7,17 @@
 // Input parameters: { slug }: any
 // Output: products grid
 // *********************
-
-import React from "react";
 import ProductItem from "./ProductItem";
 
 const Products = async ({ slug }: any) => {
+
   // getting all data from URL slug and preparing everything for sending GET request
-  const inStockNum = await slug?.searchParams?.inStock === "true" ? 1 : 0;
-  const outOfStockNum = await slug?.searchParams?.outOfStock === "true" ? 1 : 0;
-  const page = await slug?.searchParams?.page ? Number(slug?.searchParams?.page) : 1;
+  const searchParams = await slug?.searchParams;
+
+const inStockNum = searchParams?.inStock === "true" ? 1 : 0;
+const outOfStockNum = searchParams?.outOfStock === "true" ? 1 : 0;
+const page = searchParams?.page ? Number(searchParams.page) : 1;
+
 
   let stockMode: string = "lte";
   
@@ -40,14 +42,14 @@ const Products = async ({ slug }: any) => {
   // sending API request with filtering, sorting and pagination for getting all products
   const data = await fetch(
     `https://electronic-website-backend.onrender.com/api/products?filters[price][$lte]=${
-      slug?.searchParams?.price || 3000
+      searchParams?.price || 3000
     }&filters[rating][$gte]=${
-      Number(slug?.searchParams?.rating) || 0
+      Number(searchParams?.rating) || 0
     }&filters[inStock][$${stockMode}]=1&${
       slug?.params?.slug?.length > 0
         ? `filters[category][$equals]=${slug?.params?.slug}&`
         : ""
-    }sort=${slug?.searchParams?.sort}&page=${page}`
+    }sort=${searchParams?.sort}&page=${page}`
   );
 
   const products = await data.json();

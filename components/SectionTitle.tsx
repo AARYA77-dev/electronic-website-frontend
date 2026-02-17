@@ -1,22 +1,54 @@
-// *********************
-// Role of the component: Section title that can be used on any page
-// Name of the component: SectionTitle.tsx
-// Developer: Aleksandar Kuzmanovic
-// Version: 1.0
-// Component call: <SectionTitle />
-// Input parameters: {title: string; path: string}
-// Output: div containing h1 for page title and p for page location path 
-// *********************
+"use client";
+import React from 'react';
 
-import React from 'react'
-
-const SectionTitle = ({title, path} : {title: string; path: string}) => {
+const SectionTitle = ({ title, path }: { title: string; path: string }) => {
   return (
-    <div className='h-[250px] border-b pt-16 border-white bg-primary mb-2 max-sm:h-[200px] max-sm:pt-16'>
-        <h1 className='section-title-title text-7xl text-center mb-7 max-md:text-7xl max-sm:text-5xl text-white max-sm:mb-2'>{ title }</h1>
-        <p className='section-title-path text-xl text-center max-sm:text-xl text-white'>{ path }</p>
-    </div>
-  )
-}
+    <div className="relative h-[280px] w-full flex flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#1e3a8a] max-sm:h-[220px]">
+      
+      {/* Decorative Blur Orbs for Glass Effect */}
+      <div className="absolute top-[-10%] left-[-5%] w-64 h-64 bg-blue-400/20 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
 
-export default SectionTitle
+      {/* The Glass Card */}
+      <div className="
+        relative z-10 
+        px-8 py-10 
+        rounded-[40px] 
+        bg-white/10 
+        backdrop-blur-xl 
+        border border-white/30 
+        shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] 
+        text-center 
+        max-sm:px-4 
+        max-sm:py-6
+      ">
+        {/* Title with Modern Typography */}
+        <h1 className="
+          text-7xl font-black tracking-tighter 
+          bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70 
+          drop-shadow-sm 
+          max-md:text-6xl max-sm:text-4xl 
+          mb-4
+        ">
+          {title}
+        </h1>
+
+        {/* Breadcrumb Path */}
+        <div className="flex items-center justify-center gap-2">
+          <p className="
+            text-sm font-bold uppercase tracking-[0.2em] 
+            text-blue-100/80 
+            max-sm:text-xs
+          ">
+            {path}
+          </p>
+        </div>
+      </div>
+
+      {/* Bottom Glowing Border Line */}
+      <div className="absolute bottom-0 w-full h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
+    </div>
+  );
+};
+
+export default SectionTitle;

@@ -41,76 +41,104 @@ const Yourorders = () => {
     }, [session?.user?.email]);
 
   return (
-    <div className="xl:ml-5 w-full max-xl:mt-5 ">
-      <h1 className="text-3xl font-semibold text-center mb-5">All orders</h1>
-      <div className="overflow-x-auto">
-        <table className="table table-md table-pin-cols">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Name and country</th>
-              <th>Status</th>
-              <th>Subtotal</th>
-              <th>Date</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* row 1 */}
-            {orders &&
-              orders.map((order) => (
-                <tr key={order?.id}>
-                  <td>
-                    <div>
-                      <p className="font-bold">#{order?.id}</p>
+  <div className="xl:ml-5 w-full max-xl:mt-5 pb-10">
+      {/* Modern Header */}
+      <div className="flex flex-col mb-8 px-4">
+        <h1 className="text-4xl font-black text-[#1e3a8a] tracking-tight">
+          Order History
+        </h1>
+        <p className="text-slate-500 font-medium tracking-wide">
+          Tracking all processed transactions and deliveries.
+        </p>
+      </div>
+
+      {/* Glass Table Container */}
+      <div className="
+        overflow-hidden 
+        rounded-[32px] 
+        bg-white/30 backdrop-blur-2xl 
+        border border-white/60 
+        shadow-[0_20px_50px_rgba(0,0,0,0.04)]
+      ">
+        <div className="overflow-x-auto">
+          <table className="table w-full border-collapse">
+            {/* Themed Thead */}
+            <thead>
+              <tr className="border-b border-white/40 bg-white/40">
+                <th className="py-6 px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Reference</th>
+                <th className="py-6 px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Customer & Region</th>
+                <th className="py-6 px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Delivery Status</th>
+                <th className="py-6 px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Subtotal</th>
+                <th className="py-6 px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Timestamp</th>
+                <th className="py-6 text-center px-6 text-[10px] font-black uppercase tracking-[0.2em] text-[#1e3a8a]">Action</th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-white/20">
+              {orders && orders.map((order) => (
+                <tr key={order?.id} className="group hover:bg-white/50 transition-all duration-300">
+                  {/* Order ID as a badge */}
+                  <td className="px-6 py-5">
+                    <span className="font-mono text-xs font-bold bg-slate-200/50 px-2 py-1 rounded-lg text-slate-600">
+                      #{order?.id.toString().slice(-6)}
+                    </span>
+                  </td>
+
+                  {/* Name and country with improved layout */}
+                  <td className="px-6 py-5">
+                    <div className="flex flex-col">
+                      <div className="font-bold text-slate-900">{order?.name}</div>
+                      <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{order?.country}</div>
                     </div>
                   </td>
 
-                  <td>
-                    <div className="flex items-center gap-5">
-                      <div>
-                        <div className="font-bold">{order?.name}</div>
-                        <div className="text-sm opacity-50">{order?.country}</div>
-                      </div>
-                    </div>
-                  </td>
-
-                  <td>
-                    <span className="badge badge-success text-white badge-sm">
+                  {/* Glass Status Badge */}
+                  <td className="px-6 py-5">
+                    <span className="
+                      inline-flex items-center gap-1.5 px-3 py-1 
+                      rounded-full bg-emerald-500/10 text-emerald-600 
+                      text-[10px] font-black uppercase tracking-widest
+                      border border-emerald-500/20
+                    ">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                       {order?.status}
                     </span>
                   </td>
 
-                  <td>
-                    <p>${order?.total}</p>
+                  <td className="px-6 py-5">
+                    <p className="font-black text-[#1e3a8a] tracking-tighter text-lg">
+                      ₹{order?.total}
+                    </p>
                   </td>
 
-                  <td>{ new Date(Date.parse(order?.dateTime)).toLocaleString() }</td>
-                  <th>
+                  <td className="px-6 py-5 text-sm text-slate-500 font-medium">
+                    {new Date(Date.parse(order?.dateTime)).toLocaleDateString()}
+                    <span className="block text-[10px] opacity-50">
+                       {new Date(Date.parse(order?.dateTime)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </td>
+
+                  <th className="px-6 py-5 text-right">
                     <Link
                       href={`/Yourorders/${order?.id}`}
-                      className="btn btn-ghost btn-xs"
+                      className="
+                        flex items-center justify-center 
+                        px-4 py-2 
+                        bg-[#1e3a8a] text-white
+                        text-[10px] font-black uppercase tracking-widest
+                        rounded-xl shadow-lg shadow-blue-900/10
+                        hover:scale-105 active:scale-95
+                        transition-all duration-300
+                      "
                     >
-                      details
+                      View Details
                     </Link>
                   </th>
                 </tr>
               ))}
-          </tbody>
-          {/* foot */}
-          {/* <tfoot>
-            <tr>
-              <th></th>
-              <th>Order ID</th>
-              <th>Name and country</th>
-              <th>Status</th>
-              <th>Subtotal</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-          </tfoot> */}
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

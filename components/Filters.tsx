@@ -1,17 +1,6 @@
-// *********************
-// Role of the component: Filters on shop page
-// Name of the component: Filters.tsx
-// Developer: Aleksandar Kuzmanovic
-// Version: 1.0
-// Component call: <Filters />
-// Input parameters: no input parameters
-// Output: stock, rating and price filter
-// *********************
-
 "use client";
 import React, { useEffect, useState } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSortStore } from "@/app/_zustand/sortStore";
 import { usePaginationStore } from "@/app/_zustand/paginationStore";
 
@@ -25,9 +14,8 @@ interface InputCategory {
 const Filters = () => {
   const pathname = usePathname();
   const { replace } = useRouter();
-
-  // getting current page number from Zustand store
   const { page } = usePaginationStore();
+  const { sortBy } = useSortStore();
 
   const [inputCategory, setInputCategory] = useState<InputCategory>({
     inStock: { text: "instock", isChecked: true },
@@ -35,11 +23,9 @@ const Filters = () => {
     priceFilter: { text: "price", value: 3000 },
     ratingFilter: { text: "rating", value: 0 },
   });
-  const { sortBy } = useSortStore();
 
   useEffect(() => {
     const params = new URLSearchParams();
-    // setting URL params and after that putting them all in URL
     params.set("outOfStock", inputCategory.outOfStock.isChecked.toString());
     params.set("inStock", inputCategory.inStock.isChecked.toString());
     params.set("rating", inputCategory.ratingFilter.value.toString());
@@ -50,98 +36,109 @@ const Filters = () => {
   }, [inputCategory, sortBy, page]);
 
   return (
-    <div>
-      <h3 className="text-2xl mb-2">Filters</h3>
-      <div className="divider"></div>
-      <div className="flex flex-col gap-y-1">
-        <h3 className="text-xl mb-2">Availability</h3>
-        <div className="form-control">
-          <label className="cursor-pointer flex items-center">
+    <div className="
+      sticky top-28
+      w-full 
+      p-6 
+      rounded-[32px] 
+      bg-white/40 
+      backdrop-blur-xl 
+      border border-white/60 
+      shadow-[0_8px_32px_rgba(31,38,135,0.05)]
+    ">
+      <h3 className="text-2xl font-bold text-[#1e3a8a] mb-6 tracking-tight">Filters</h3>
+      
+      {/* Availability Section */}
+      <div className="space-y-4">
+        <h4 className="text-sm font-bold uppercase tracking-widest text-slate-500 mb-3">Availability</h4>
+        <div className="flex flex-col gap-y-3">
+          <label className="group cursor-pointer flex items-center transition-all">
             <input
               type="checkbox"
               checked={inputCategory.inStock.isChecked}
               onChange={() =>
                 setInputCategory({
                   ...inputCategory,
-                  inStock: {
-                    text: "instock",
-                    isChecked: !inputCategory.inStock.isChecked,
-                  },
+                  inStock: { ...inputCategory.inStock, isChecked: !inputCategory.inStock.isChecked },
                 })
               }
-              className="checkbox"
+              className="checkbox checkbox-primary border-slate-300 bg-white/50"
             />
-            <span className="label-text text-lg ml-2 text-black">In stock</span>
+            <span className="ml-3 text-slate-700 group-hover:text-[#1e3a8a] transition-colors font-medium">In stock</span>
           </label>
-        </div>
 
-        <div className="form-control">
-          <label className="cursor-pointer flex items-center">
+          <label className="group cursor-pointer flex items-center transition-all">
             <input
               type="checkbox"
               checked={inputCategory.outOfStock.isChecked}
               onChange={() =>
                 setInputCategory({
                   ...inputCategory,
-                  outOfStock: {
-                    text: "outofstock",
-                    isChecked: !inputCategory.outOfStock.isChecked,
-                  },
+                  outOfStock: { ...inputCategory.outOfStock, isChecked: !inputCategory.outOfStock.isChecked },
                 })
               }
-              className="checkbox bg-green-500"
+              className="checkbox checkbox-primary border-slate-300 bg-white/50"
             />
-            <span className="label-text text-lg ml-2 text-black">
-              Out of stock
-            </span>
+            <span className="ml-3 text-slate-700 group-hover:text-[#1e3a8a] transition-colors font-medium">Out of stock</span>
           </label>
         </div>
       </div>
 
-      <div className="divider"></div>
-      <div className="flex flex-col gap-y-1">
-        <h3 className="text-xl mb-2">Price</h3>
-        <div>
-          <input
-            type="range"
-            min={0}
-            max={3000}
-            step={10}
-            value={inputCategory.priceFilter.value}
-            className="range"
-            onChange={(e) =>
-              setInputCategory({
-                ...inputCategory,
-                priceFilter: {
-                  text: "price",
-                  value: Number(e.target.value),
-                },
-              })
-            }
-          />
-          <span>{`Max price: $${inputCategory.priceFilter.value}`}</span>
+      <div className="h-[1px] bg-white/60 my-8 shadow-sm"></div>
+
+      {/* Price Section */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-end mb-2">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-slate-500">Price</h4>
+          <span className="text-[#1e3a8a] font-bold text-sm bg-white/60 px-2 py-1 rounded-lg border border-white/80">
+            ${inputCategory.priceFilter.value}
+          </span>
+        </div>
+        <input
+          type="range"
+          min={0}
+          max={3000}
+          step={10}
+          value={inputCategory.priceFilter.value}
+          className="range range-xs range-primary accent-[#1e3a8a]"
+          onChange={(e) =>
+            setInputCategory({
+              ...inputCategory,
+              priceFilter: { ...inputCategory.priceFilter, value: Number(e.target.value) },
+            })
+          }
+        />
+        <div className="flex justify-between text-[10px] text-slate-400 font-bold px-1">
+          <span>$0</span>
+          <span>$3000</span>
         </div>
       </div>
 
-      <div className="divider"></div>
+      <div className="h-[1px] bg-white/60 my-8 shadow-sm"></div>
 
-      <div>
-        <h3 className="text-xl mb-2">Minimum Rating:</h3>
+      {/* Rating Section */}
+      <div className="space-y-4">
+        <div className="flex justify-between items-end mb-2">
+          <h4 className="text-sm font-bold uppercase tracking-widest text-slate-500">Minimum Rating</h4>
+          <span className="text-[#1e3a8a] font-bold text-sm bg-white/60 px-2 py-1 rounded-lg border border-white/80">
+            {inputCategory.ratingFilter.value}★
+          </span>
+        </div>
         <input
           type="range"
           min={0}
           max="5"
+          step="1"
           value={inputCategory.ratingFilter.value}
           onChange={(e) =>
             setInputCategory({
               ...inputCategory,
-              ratingFilter: { text: "rating", value: Number(e.target.value) },
+              ratingFilter: { ...inputCategory.ratingFilter, value: Number(e.target.value) },
             })
           }
-          className="range range-info accent-green-500"
-          step="1"
+          className="range range-xs range-primary accent-[#1e3a8a]"
         />
-        <div className="w-full bg-green flex justify-between text-xs px-2">
+        <div className="flex justify-between text-[10px] text-slate-400 font-bold px-1">
           <span>0</span>
           <span>1</span>
           <span>2</span>
@@ -150,6 +147,19 @@ const Filters = () => {
           <span>5</span>
         </div>
       </div>
+
+      {/* Clear Button Placeholder for Modern UX */}
+      <button 
+        onClick={() => setInputCategory({
+          inStock: { text: "instock", isChecked: true },
+          outOfStock: { text: "outofstock", isChecked: true },
+          priceFilter: { text: "price", value: 3000 },
+          ratingFilter: { text: "rating", value: 0 },
+        })}
+        className="w-full mt-8 py-3 rounded-2xl text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-white hover:bg-blue-800 transition-all border border-slate-200"
+      >
+        Reset Filters
+      </button>
     </div>
   );
 };

@@ -60,222 +60,97 @@ const UserProfile = () => {
   }, [session?.user?.email]);
 
 
+const InputField = ({ label, value, name, type = "text", onChange }: any) => (
+    <div className="flex flex-col gap-2">
+      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 ml-1">
+        {label}
+      </label>
+      <input
+        type={type}
+        value={value || ''}
+        onChange={(e) => setUser({ ...user, [name]: e.target.value })}
+        className="
+          w-full px-5 py-3 
+          bg-white/40 backdrop-blur-md 
+          border border-white/60 
+          rounded-2xl text-slate-900 
+          shadow-[0_4px_10px_rgba(0,0,0,0.02)]
+          placeholder:text-slate-400
+          focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50
+          transition-all duration-300
+        "
+      />
+    </div>
+  );
 
-
-  
-
-  return (<>
-    <div className="bg-white">
+  return (
+   <div className="min-h-screen bg-gradient-to-br from-slate-50 via-gray-100 to-blue-100">
       <SectionTitle title="Profile" path="Home | Profile" />
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-white">
-        <div className="flex justify-center flex-col items-center">
-          <h2 className="mt-6 text-center text-2xl leading-9 tracking-tight text-gray-900">
-            Profile Details
-          </h2>
-        </div>
+      
+      <div className="max-w-4xl mx-auto px-5 py-12">
+        <div className="
+          relative overflow-hidden
+          bg-white/30 backdrop-blur-2xl 
+          border border-white/60 
+          rounded-[40px] 
+          p-8 md:p-12 
+          shadow-[0_20px_50px_rgba(0,0,0,0.05)]
+        ">
+          {/* Decorative Background Orb */}
+          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
-            <form className="space-y-6"
-            // onSubmit={handleSubmit}
-            >
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Firstname
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="name"
-                    name="name"
-                    type="text"
-                    value={user.firstname}
-                    onChange={(e) => setUser({ ...user, firstname: e.target.value })}
-                    required
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+          <div className="relative z-10">
+            <header className="mb-10 text-center md:text-left">
+              <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+                Account Settings
+              </h2>
+              <p className="text-slate-500 font-medium">Manage your personal information and shipping details.</p>
+            </header>
+
+            <form className="space-y-8">
+              {/* Personal Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputField label="First Name" name="firstname" value={user.firstname} onChange={setUser} />
+                <InputField label="Last Name" name="lastname" value={user.lastname} onChange={setUser} />
+                <InputField label="Email Address" name="email" value={user.email} type="email" onChange={setUser} />
+                <InputField label="Phone Number" name="phone" value={user.phone} onChange={setUser} />
               </div>
 
-              <div>
-                <label
-                  htmlFor="lastname"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Lastname
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="lastname"
-                    name="lastname"
-                    value={user.lastname}
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, lastname: e.target.value })}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
+              <div className="h-[1px] w-full bg-gradient-to-r from-transparent via-white to-transparent" />
+
+              {/* Address Section */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="md:col-span-2">
+                  <InputField label="Street Address" name="address" value={user.address} onChange={setUser} />
                 </div>
+                <InputField label="Apartment / Suite" name="apartment" value={user.apartment} onChange={setUser} />
+                <InputField label="City" name="city" value={user.city} onChange={setUser} />
+                <InputField label="Country" name="country" value={user.country} onChange={setUser} />
+                <InputField label="Postal Code" name="postalCode" value={user.postalCode} onChange={setUser} />
               </div>
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    onChange={(e) => setUser({ ...user, email: e.target.value })}
-                    value={user.email}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Phone
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, phone: e.target.value })}
-                    value={user.phone}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="address"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="address"
-                    name="address"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, address: e.target.value })}
-                    value={user.address}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="apartment"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                    Apartment, suite, etc.
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="apartment"
-                    name="apartment"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, apartment: e.target.value })}
-                    value={user.apartment}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="city"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  City
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, city: e.target.value })}
-                    value={user.city}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Country
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="country"
-                    name="country"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, country: e.target.value })}
-                    value={user.country}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="postalCode"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Postal Code
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="postalCode"
-                    name="postalCode"
-                    type="text"
-                    required
-                    onChange={(e) => setUser({ ...user, postalCode: e.target.value })}
-                    value={user.postalCode}
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-
-
-              <div>
+              {/* Submit Button */}
+              <div className="pt-6">
                 <button
                   type="button"
                   onClick={handleUpdate}
-                  className="block mx-auto w-full uppercase bg-secondary px-5 rounded-[44px] py-5 text-lg border border-black border-secondary font-bold text-tertiary shadow-sm hover:bg-tertiary hover:text-secondary focus:outline-none focus:ring-2"
-
+                  className="
+                    w-full md:w-auto px-12 py-4
+                    bg-[#1e3a8a] text-white
+                    text-sm font-black uppercase tracking-widest
+                    rounded-2xl shadow-xl shadow-blue-900/20
+                    hover:scale-105 active:scale-95
+                    transition-all duration-300
+                  "
                 >
-                  Update user
+                  Update Base Records
                 </button>
-
-                <p className="text-red-600 text-center text-[16px] my-4">
-                  {/* {error && error} */}
-                </p>
               </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-  </>
   )
 }
 

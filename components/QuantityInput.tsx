@@ -31,16 +31,29 @@ const QuantityInput = ({quantityCount, setQuantityCount} : QuantityInputProps) =
   };
 
   return (
-    <div className="flex items-center gap-x-4 max-[500px]:justify-center">
-      <p className="text-xl">Quantity: </p>
+    <div className="flex flex-col gap-2">
+      <label htmlFor="Quantity" className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">Quantity: </label>
 
-      <div className="flex items-center gap-1">
+      <div className=" flex items-center 
+        bg-white/50 
+        backdrop-blur-sm 
+        border border-white/80 
+        rounded-2xl 
+        w-fit 
+        overflow-hidden 
+        shadow-sm">
         <button
           type="button"
-          className="size-10 leading-10 text-gray-600 transition hover:opacity-75 flex justify-center items-center border"
+          className=" size-10 
+            flex items-center justify-center 
+            text-slate-600 
+            hover:bg-[#1e3a8a] 
+            hover:text-white 
+            transition-all 
+            active:scale-90"
           onClick={() => handleQuantityChange("minus")}
         >
-          <FaMinus />
+          <FaMinus className="text-xs" />
         </button>
 
         <input
@@ -48,15 +61,31 @@ const QuantityInput = ({quantityCount, setQuantityCount} : QuantityInputProps) =
           id="Quantity"
           disabled={true}
           value={quantityCount}
-          className="h-10 w-24 rounded border-gray-200 sm:text-sm"
+          className=" h-10 w-12 
+            bg-transparent 
+            text-center 
+            font-bold 
+            text-[#1e3a8a] 
+            text-sm 
+            outline-none
+            pointer-events-none
+            [appearance:textfield]
+            [&::-webkit-inner-spin-button]:appearance-none 
+            [&::-webkit-outer-spin-button]:appearance-none"
         />
 
         <button
           type="button"
-          className="size-10 leading-10 text-gray-600 transition hover:opacity-75 flex justify-center items-center border"
+          className="size-10 
+            flex items-center justify-center 
+            text-slate-600 
+            hover:bg-[#1e3a8a] 
+            hover:text-white 
+            transition-all 
+            active:scale-90"
           onClick={() => handleQuantityChange("plus")}
         >
-          <FaPlus />
+          <FaPlus className="text-xs" />
         </button>
       </div>
     </div>

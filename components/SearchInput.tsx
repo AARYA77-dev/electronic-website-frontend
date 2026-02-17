@@ -53,15 +53,19 @@ const SearchInput = () => {
         type="submit"
         className="
       bg-secondary
-      text-tertiary
-      px-4 sm:px-6
-      py-2
-      rounded-r-full
-      font-semibold
-      hover:bg-tertiary
-      hover:text-secondary
-      transition
-      text-sm sm:text-base
+            text-white
+            px-8
+            m-1.5
+            rounded-full
+            text-[11px]
+            font-black
+            uppercase
+            tracking-widest
+            hover:bg-blue-600
+            active:scale-95
+            transition-all
+            duration-300
+            shadow-lg
     "
       >
         Search

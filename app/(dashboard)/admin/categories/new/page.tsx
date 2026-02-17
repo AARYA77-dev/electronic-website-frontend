@@ -8,9 +8,11 @@ const DashboardNewCategoryPage = () => {
   const [categoryInput, setCategoryInput] = useState({
     name: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const addNewCategory = () => {
     if (categoryInput.name.length > 0) {
+      setLoading(true);
       const requestOptions = {
         method: "post",
         headers: { "Content-Type": "application/json" },
@@ -18,57 +20,70 @@ const DashboardNewCategoryPage = () => {
           name: convertCategoryNameToURLFriendly(categoryInput.name),
         }),
       };
-      // sending API request for creating new cateogry
+
       fetch(`https://electronic-website-backend.onrender.com/api/categories`, requestOptions)
         .then((response) => {
-          if (response.status === 201) {
-            return response.json();
-          } else {
-            throw Error("There was an error while creating category");
-          }
+          if (response.status === 201) return response.json();
+          throw Error("Error");
         })
-        .then((data) => {
-          toast.success("Category added successfully");
-          setCategoryInput({
-            name: "",
-          });
+        .then(() => {
+          toast.success("Taxonomy updated successfully");
+          setCategoryInput({ name: "" });
         })
-        .catch((error) => {
-          toast.error("There was an error while creating category");
-        });
+        .catch(() => toast.error("System error during classification"))
+        .finally(() => setLoading(false));
     } else {
-      toast.error("You need to enter values to add a category");
+      toast.error("Input required for system entry");
     }
   };
-  return (
-    <div className="bg-white flex justify-start max-w-screen-2xl mx-auto xl:h-full max-xl:flex-col max-xl:gap-y-5">
-      <DashboardSidebar />
-      <div className="flex flex-col gap-y-7 xl:pl-5 max-xl:px-5 w-full">
-        <h1 className="text-3xl font-semibold">Add new category</h1>
-        <div>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text">Category name:</span>
-            </div>
-            <input
-              type="text"
-              className="input input-bordered w-full max-w-xs"
-              value={categoryInput.name}
-              onChange={(e) =>
-                setCategoryInput({ ...categoryInput, name: e.target.value })
-              }
-            />
-          </label>
-        </div>
 
-        <div className="flex gap-x-2">
-          <button
-            type="button"
-            className="uppercase rounded-[37px] bg-secondary px-10 py-5 text-lg border border-black border-gray-300 font-bold text-tertiary shadow-sm hover:bg-tertiary hover:text-secondary focus:outline-none focus:ring-2"
-            onClick={addNewCategory}
-          >
-            Create category
-          </button>
+  return (
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-screen-2xl mx-auto flex max-xl:flex-col h-screen overflow-hidden">
+        <DashboardSidebar />
+        
+        <div className="flex-1 flex flex-col p-6 xl:p-12 justify-center items-center">
+          {/* Centralized Glass Card */}
+          <div className="w-full max-w-2xl bg-white/40 backdrop-blur-2xl border border-white/60 rounded-[48px] p-10 xl:p-16 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.08)]">
+            
+            <header className="mb-12 text-center">
+              <h1 className="text-5xl font-black text-slate-900 tracking-tighter mt-2">
+                New Category
+              </h1>
+              <p className="text-slate-500 font-medium mt-4">Define a new category for your product.</p>
+            </header>
+
+            <div className="space-y-10">
+              {/* Input Group */}
+              <div className="relative group">
+                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 absolute -top-3 left-6 bg-white px-2 z-10">
+                  Category Label
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. smart phone"
+                  className="w-full bg-white/50 border-2 border-slate-100 rounded-3xl px-8 py-6 text-xl font-bold text-slate-800 outline-none transition-all focus:border-blue-500 focus:bg-white focus:shadow-[0_0_20px_rgba(59,130,246,0.1)] placeholder:text-slate-300"
+                  value={categoryInput.name}
+                  onChange={(e) => setCategoryInput({ ...categoryInput, name: e.target.value })}
+                />
+              </div>
+
+              {/* Action Button */}
+              <button
+                type="button"
+                disabled={loading}
+                className="w-full mt-6 bg-blue-600 text-white rounded-[24px] py-6 font-black uppercase tracking-[0.2em] text-xs shadow-xl shadow-blue-600/20 hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                onClick={addNewCategory}
+              >
+                <span className="relative z-10 text-xs font-black uppercase tracking-[0.3em]">
+                  {loading ? "Proccesing..." : "Add Category"}
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Decorative Background Element */}
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[120px] -z-10" />
         </div>
       </div>
     </div>

@@ -63,35 +63,74 @@ const QuantityInputCart = ({ product ,userId} : { product: ProductInCart, userId
   }, [debouncedUpdate]);
 
   return (
-    <div>
-      <label htmlFor="Quantity" className="sr-only">
-        {" "}
-        Quantity{" "}
+    <div className="flex flex-col gap-2">
+      <label htmlFor="Quantity" className="text-[10px] font-bold uppercase tracking-widest text-slate-400 ml-1">
+        Quantity
       </label>
 
-      <div className="flex items-center justify-center rounded border border-gray-200 w-32">
+      <div className="
+        flex items-center 
+        bg-white/50 
+        backdrop-blur-sm 
+        border border-white/80 
+        rounded-2xl 
+        w-fit 
+        overflow-hidden 
+        shadow-sm
+      ">
+        {/* Minus Button */}
         <button
           type="button"
-          className="size-10 leading-10 text-gray-600 transition hover:opacity-75 flex items-center justify-center"
+          className="
+            size-10 
+            flex items-center justify-center 
+            text-slate-600 
+            hover:bg-[#1e3a8a] 
+            hover:text-white 
+            transition-all 
+            active:scale-90
+          "
           onClick={() => handleQuantityChange("minus")}
         >
-          <FaMinus />
+          <FaMinus className="text-xs" />
         </button>
 
+        {/* Quantity Display */}
         <input
           type="number"
           id="Quantity"
           disabled={true}
           value={quantityCount}
-          className="h-10 w-16 border-transparent text-center [-moz-appearance:_textfield] sm:text-sm [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+          className="
+            h-10 w-12 
+            bg-transparent 
+            text-center 
+            font-bold 
+            text-[#1e3a8a] 
+            text-sm 
+            outline-none
+            pointer-events-none
+            [appearance:textfield]
+            [&::-webkit-inner-spin-button]:appearance-none 
+            [&::-webkit-outer-spin-button]:appearance-none
+          "
         />
 
+        {/* Plus Button */}
         <button
           type="button"
-          className="size-10 leading-10 text-gray-600 transition hover:opacity-75 flex items-center justify-center"
+          className="
+            size-10 
+            flex items-center justify-center 
+            text-slate-600 
+            hover:bg-[#1e3a8a] 
+            hover:text-white 
+            transition-all 
+            active:scale-90
+          "
           onClick={() => handleQuantityChange("plus")}
         >
-          <FaPlus />
+          <FaPlus className="text-xs" />
         </button>
       </div>
     </div>
