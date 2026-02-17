@@ -125,8 +125,6 @@ const RegisterPage = () => {
       </div></>;
   }
 
-
-
   return (
     <div className="min-h-screen relative overflow-x-hidden flex flex-col">
       {/* Background Orbs */}
@@ -158,7 +156,7 @@ const RegisterPage = () => {
                     type="text"
                     name="firstname"
                     placeholder="John"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -168,7 +166,7 @@ const RegisterPage = () => {
                     type="text"
                     name="lastname"
                     placeholder="Doe"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -181,7 +179,7 @@ const RegisterPage = () => {
                   type="email"
                   name="email"
                   placeholder="name@domain.com"
-                  className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                  className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                   required
                 />
               </div>
@@ -194,7 +192,7 @@ const RegisterPage = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Min 8 chars"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
                   />
                   <button
@@ -211,7 +209,7 @@ const RegisterPage = () => {
                     type="password"
                     name="confirmpassword"
                     placeholder="Repeat key"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
                     required
                   />
                 </div>
@@ -230,7 +228,7 @@ const RegisterPage = () => {
                   <input
                     type="text"
                     name="address"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
                 <div className="space-y-1">
@@ -239,7 +237,7 @@ const RegisterPage = () => {
                     type="tel"
                     name="phone"
                     placeholder="+1..."
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black outline-none focus:border-blue-500 transition-all"
                     required
                   />
                 </div>
@@ -252,7 +250,7 @@ const RegisterPage = () => {
                   <input
                     type="text"
                     name="city"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
                 <div className="space-y-1">
@@ -260,7 +258,7 @@ const RegisterPage = () => {
                   <input
                     type="text"
                     name="country"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
                 <div className="space-y-1">
@@ -268,7 +266,7 @@ const RegisterPage = () => {
                   <input
                     type="text"
                     name="postalCode"
-                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white outline-none focus:border-blue-500 transition-all"
+                    className="w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black outline-none focus:border-blue-500 transition-all"
                   />
                 </div>
               </div>

@@ -75,7 +75,7 @@ const LoginPage = () => {
                   name="email"
                   type="email"
                   placeholder="name@mail.com"
-                  className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                  className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
                 />
               </div>
 
@@ -89,7 +89,7 @@ const LoginPage = () => {
                     name="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-white placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
+                    className="block w-full rounded-2xl border-white/10 bg-white/5 py-4 px-6 text-black placeholder:text-slate-600 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all outline-none"
                   />
                   <button
                     type="button"
